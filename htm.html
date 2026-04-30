@@ -1,0 +1,48 @@
+<script>
+let cart = [];
+
+function showQR(id, product) {
+    let qr = document.getElementById(id);
+    qr.style.display = "block";
+    qr.innerHTML = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=" + product + "'>";
+}
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    document.getElementById("cartCount").innerText = cart.length;
+    alert(name + " added to cart!");
+}
+
+function viewCart() {
+    if(cart.length === 0){
+        alert("Cart is empty!");
+        return;
+    }
+
+    let items = "";
+    let total = 0;
+
+    cart.forEach(item => {
+        items += item.name + " - KSh " + item.price + "\n";
+        total += item.price;
+    });
+
+    let checkout = confirm(items + "\n\nTotal: KSh " + total + "\n\nProceed to checkout?");
+    
+    if(checkout){
+        alert("✅ Order placed!\n\nPay via M-Pesa:\nTill Number: 123456\nAmount: KSh " + total);
+        cart = [];
+        document.getElementById("cartCount").innerText = 0;
+    }
+}
+
+function searchProducts() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "block" : "none";
+    });
+}
+</script>

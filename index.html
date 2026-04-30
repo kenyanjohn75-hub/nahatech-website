@@ -1,3 +1,15 @@
+Here’s the **fully merged, complete HTML code** with everything included:  
+
+- ✅ Hero banner  
+- ✅ Responsive design (mobile + desktop)  
+- ✅ Hover effects  
+- ✅ Floating “Contact Us” button (WhatsApp)  
+- ✅ **Buy button** → shows payment prompt with your M‑Pesa number  
+- ✅ **Add to Cart button** → shows modal with model, quantity, and purchase details form  
+
+You can copy this entire file and replace your old code:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +25,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f5f5f5;
+      color: #333;
     }
 
     header {
@@ -21,14 +34,19 @@
       padding: 15px;
       position: sticky;
       top: 0;
+      z-index: 1000;
     }
-
-    header h1 { margin: 0; }
 
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 28px);
     }
 
     .cart-btn {
@@ -36,6 +54,22 @@
       padding: 8px 12px;
       border-radius: 5px;
       cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: white;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .hero h2 {
+      font-size: clamp(24px, 5vw, 40px);
+      margin-bottom: 10px;
+    }
+    .hero p {
+      font-size: clamp(14px, 3vw, 18px);
     }
 
     .container {
@@ -51,6 +85,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
 
     .card img {
@@ -63,6 +102,7 @@
     .price {
       color: green;
       font-weight: bold;
+      margin: 10px 0;
     }
 
     button {
@@ -71,29 +111,87 @@
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      transition: opacity 0.3s;
     }
+    button:hover { opacity: 0.9; }
 
     .buy { background: green; color: white; }
     .cart { background: orange; color: white; }
-
-    #cartModal {
-      display: none;
-      position: fixed;
-      top: 20%;
-      left: 50%;
-      transform: translate(-50%, -20%);
-      background: white;
-      padding: 20px;
-      width: 300px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-      border-radius: 10px;
-    }
 
     footer {
       background: #0a0a23;
       color: white;
       text-align: center;
       padding: 20px;
+      margin-top: 30px;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background: white;
+      color: #000;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .close {
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+      color: #aaa;
+    }
+    .close:hover { color: #000; }
+
+    /* Floating Contact Button */
+    .contact-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366; /* WhatsApp green */
+      color: white;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+      z-index: 2000;
+    }
+    .contact-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        text-align: center;
+      }
+      .cart-btn {
+        margin-top: 10px;
+        width: 100%;
+      }
+      .card {
+        width: 90%;
+        margin: 0 auto;
+      }
+      button {
+        width: 100%;
+        margin-top: 8px;
+      }
     }
   </style>
 </head>
@@ -106,14 +204,19 @@
     </nav>
   </header>
 
+  <section class="hero">
+    <h2>Affordable Laptops in Kenya</h2>
+    <p>Shop HP, Dell, Lenovo, and MacBook at the best prices in Kisii.</p>
+  </section>
+
   <section class="container">
     <div class="card">
       <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8" alt="HP EliteBook">
       <h3>HP EliteBook 840 G3</h3>
       <p>Core i5, 8GB RAM, 256GB SSD</p>
       <div class="price">KSh 35,000</div>
-      <button class="buy">Buy Now</button>
-      <button class="cart">Add to Cart</button>
+      <button class="buy" onclick="showPayment('HP EliteBook 840 G3 - KSh 35,000')">Buy Now</button>
+      <button class="cart" onclick="addToCart('HP EliteBook 840 G3')">Add to Cart</button>
     </div>
 
     <div class="card">
@@ -121,8 +224,26 @@
       <h3>Dell Inspiron</h3>
       <p>Core i7, 16GB RAM, 512GB SSD</p>
       <div class="price">KSh 75,000</div>
-      <button class="buy">Buy Now</button>
-      <button class="cart">Add to Cart</button>
+      <button class="buy" onclick="showPayment('Dell Inspiron - KSh 75,000')">Buy Now</button>
+      <button class="cart" onclick="addToCart('Dell Inspiron')">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c" alt="Lenovo ThinkPad">
+      <h3>Lenovo ThinkPad</h3>
+      <p>Core i5, 8GB RAM, 512GB SSD</p>
+      <div class="price">KSh 55,000</div>
+      <button class="buy" onclick="showPayment('Lenovo ThinkPad - KSh 55,000')">Buy Now</button>
+      <button class="cart" onclick="addToCart('Lenovo ThinkPad')">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1d" alt="MacBook Air M1">
+      <h3>MacBook Air M1</h3>
+      <p>8GB RAM, 256GB SSD</p>
+      <div class="price">KSh 115,000</div>
+      <button class="buy" onclick="showPayment('MacBook Air M1 - KSh 115,000')">Buy Now</button>
+      <button class="cart" onclick="addToCart('MacBook Air M1')">Add to Cart</button>
     </div>
   </section>
 
@@ -130,5 +251,6 @@
     <p>📍 Kisii, Kenya | 📞 +254 786467783</p>
     <p>© 2026 NAHATECH LTD</p>
   </footer>
-</body>
-</html>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="modal

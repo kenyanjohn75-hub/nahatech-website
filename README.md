@@ -1,0 +1,3 @@
+NAHATECH LTD is your trusted source for high‑quality laptops in Kenya. We specialize in offering a wide range of top brands including HP, Dell, Lenovo, and Apple MacBook, all at competitive prices. Whether you’re a student, professional, or business owner, our carefully selected laptops are designed to meet your performance needs — from everyday computing to advanced productivity.
+
+With a commitment to reliability, affordability, and excellent customer service, NAHATECH LTD ensures that every client gets the best value. Browse our collection, enjoy transparent pricing, and shop with confidence knowing you’re getting genuine products backed by our expertise

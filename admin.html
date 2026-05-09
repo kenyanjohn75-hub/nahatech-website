@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+body{font-family:Arial;background:#f5f5f5;margin:0;}
+.box{background:white;margin:10px;padding:10px;border-radius:10px;}
+input{width:90%;padding:8px;margin:5px;}
+button{padding:8px;border:none;background:#0a7d3c;color:white;border-radius:5px;}
+.red{background:red;}
+.blue{background:#1976d2;}
+</style>
+</head>
+
+<body>
+
+<h2 style="text-align:center;">ADMIN PANEL</h2>
+
+<div class="box">
+<input type="password" id="pass" placeholder="Admin password">
+<button onclick="login()">Login</button>
+</div>
+
+<div id="panel" style="display:none;">
+
+<div class="box">
+<h3>Add Product</h3>
+
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Price">
+<input id="stock" placeholder="Stock">
+
+<input type="file" id="imgFile" accept="image/*">
+<br>
+<img id="preview" style="width:100px;display:none;margin-top:5px;">
+
+<button onclick="addProduct()">Add Product</button>
+</div>
+
+<div class="box">
+<h3>Products (Edit / Delete / Discount)</h3>
+<div id="list"></div>
+</div>
+
+<div class="box">
+<h3>Sales Dashboard</h3>
+<div id="sales"></div>
+</div>
+
+</div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("products")) || [];
+let sales = JSON.parse(localStorage.getItem("sales")) || [];
+let imageBase64 = "";
+
+/* LOGIN */
+function login(){
+if(pass.value==="1234"){
+panel.style.display="block";
+load();
+loadSales();
+}else alert("Wrong password");
+}
+
+/* IMAGE UPLOAD */
+document.getElementById("imgFile").addEventListener("change",function(e){
+let file=e.target.files[0];
+let reader=new FileReader();
+
+reader.onload=function(){
+imageBase64=reader.result;
+preview.src=imageBase64;
+preview.style.display="block";
+};
+
+reader.readAsDataURL(file);
+});
+
+/* ADD PRODUCT */
+function addProduct(){
+
+products.push({
+name:name.value,
+price:Number(price.value),
+stock:Number(stock.value),
+img:imageBase64
+});
+
+localStorage.setItem("products",JSON.stringify(products));
+
+name.value="";
+price.value="";
+stock.value="";
+imageBase64="";
+preview.style.display="none";
+
+load();
+}
+
+/* LOAD PRODUCTS (EDIT + DELETE + DISCOUNT) */
+function load(){
+products = JSON.parse(localStorage.getItem("products")) || [];
+
+let div=document.getElementById("list");
+div.innerHTML="";
+
+products.forEach((p,i)=>{
+div.innerHTML+=`
+<div class="box">
+
+<img src="${p.img}" style="width:80px;height:80px;object-fit:cover;"><br>
+
+<input value="${p.name}" onchange="editName(${i},this.value)">
+<input value="${p.price}" onchange="editPrice(${i},this.value)">
+<input value="${p.stock}" onchange="editStock(${i},this.value)">
+
+<br>
+
+<button onclick="discount(${i})" class="blue">-10% Discount</button>
+<button onclick="remove(${i})" class="red">Delete</button>
+
+</div>`;
+});
+}
+
+/* EDIT */
+function editName(i,v){products[i].name=v;save();}
+function editPrice(i,v){products[i].price=Number(v);save();}
+function editStock(i,v){products[i].stock=Number(v);save();}
+
+/* DISCOUNT */
+function discount(i){
+products[i].price=Math.round(products[i].price*0.9);
+save();
+load();
+}
+
+/* DELETE */
+function remove(i){
+products.splice(i,1);
+save();
+load();
+}
+
+/* SAVE */
+function save(){
+localStorage.setItem("products",JSON.stringify(products));
+}
+
+/* SALES */
+function loadSales(){
+sales = JSON.parse(localStorage.getItem("sales")) || [];
+
+let div=document.getElementById("sales");
+div.innerHTML="";
+
+let total=0;
+
+sales.forEach(s=>{
+total+=s.total;
+div.innerHTML+=`
+<div class="box">
+${s.date} - ₹${s.total}
+</div>`;
+});
+
+div.innerHTML+=`<h3>Total Revenue: ₹${total}</h3>`;
+}
+
+</script>
+
+</body>
+  </html>

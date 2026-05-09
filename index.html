@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="description" content="Buy affordable laptops in Kenya from NAHATECH. HP, Dell, Lenovo, MacBook at best prices in Kisii.">
+
 <meta name="keywords" content="laptops Kenya, cheap laptops Kisii, HP Dell Lenovo Kenya, NAHATECH">
+
 <meta name="author" content="NAHATECH">
 
 <title>NAHATECH LTD</title>
@@ -46,11 +48,11 @@ align-items:center;
 
 .cart-btn,
 .admin-btn{
-padding:8px 15px;
+padding:10px 15px;
+border:none;
 border-radius:5px;
 cursor:pointer;
 font-weight:bold;
-text-decoration:none;
 color:white;
 }
 
@@ -103,8 +105,8 @@ font-size:20px;
 }
 
 .stock{
-color:#555;
 font-size:14px;
+color:#555;
 margin-bottom:10px;
 }
 
@@ -147,9 +149,11 @@ padding:20px;
 display:none;
 position:fixed;
 z-index:2000;
+left:0;
+top:0;
 width:100%;
 height:100%;
-background-color:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.6);
 overflow:auto;
 }
 
@@ -165,15 +169,15 @@ text-align:center;
 
 .close{
 float:right;
-cursor:pointer;
 font-size:25px;
+cursor:pointer;
 font-weight:bold;
 }
 
 input{
 width:90%;
 padding:10px;
-margin:6px 0;
+margin:8px 0;
 border-radius:5px;
 border:1px solid #ddd;
 }
@@ -183,8 +187,6 @@ background:green;
 color:white;
 width:90%;
 padding:12px;
-border:none;
-border-radius:5px;
 }
 
 /* ADMIN */
@@ -217,7 +219,7 @@ text-decoration:none;
 display:flex;
 align-items:center;
 gap:10px;
-z-index:1000;
+z-index:999;
 }
 
 .whatsapp-chat img{
@@ -239,13 +241,13 @@ width:25px;
 
 <div class="nav-buttons">
 
-<div class="cart-btn" onclick="openCart()">
+<button class="cart-btn" onclick="openCart()">
 🛒 Cart
-</div>
+</button>
 
-<a href="#" class="admin-btn" onclick="openAdmin()">
+<button class="admin-btn" onclick="openAdmin()">
 Admin Panel
-</a>
+</button>
 
 </div>
 
@@ -273,7 +275,7 @@ Shop HP, Dell, Lenovo and MacBook at the best prices in Kisii.
 
 <footer>
 
-<p>📍 Kisii, Kenya | 📞 +254 786467783</p>
+<p>📍 Kisii, Kenya | 📞 +254786467783</p>
 
 <p>© 2026 NAHATECH LTD</p>
 
@@ -307,7 +309,7 @@ Checkout via WhatsApp
 
 </div>
 
-<!-- ADMIN LOGIN MODAL -->
+<!-- ADMIN LOGIN -->
 
 <div id="adminLoginModal" class="modal">
 
@@ -319,10 +321,17 @@ Checkout via WhatsApp
 
 <h2>Admin Login</h2>
 
-<input type="password" id="adminPassword" placeholder="Enter Password">
+<input
+type="password"
+id="adminPassword"
+placeholder="Enter Password">
 
-<button class="submit-btn" onclick="loginAdmin()">
+<button
+class="submit-btn"
+onclick="loginAdmin()">
+
 Login
+
 </button>
 
 </div>
@@ -341,17 +350,30 @@ Login
 
 <h2>NAHATECH ADMIN PANEL</h2>
 
-<input type="text" id="productName" placeholder="Product Name">
+<input
+type="text"
+id="productName"
+placeholder="Product Name">
 
-<input type="number" id="productPrice" placeholder="Price in KSh">
+<input
+type="number"
+id="productPrice"
+placeholder="Price in KSh">
 
-<input type="number" id="productQuantity" placeholder="Quantity">
+<input
+type="number"
+id="productQuantity"
+placeholder="Quantity">
 
-<input type="file" id="productImage">
+<input
+type="file"
+id="productImage"
+accept="image/*">
 
 <br><br>
 
-<img id="previewImage"
+<img
+id="previewImage"
 style="
 width:120px;
 display:none;
@@ -376,9 +398,10 @@ Upload Product
 
 <!-- WHATSAPP -->
 
-<a href="https://wa.me/254786467783"
-class="whatsapp-chat"
-target="_blank">
+<a
+href="https://wa.me/254786467783"
+target="_blank"
+class="whatsapp-chat">
 
 <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
 
@@ -409,6 +432,7 @@ container.innerHTML = "";
 if(products.length===0){
 
 container.innerHTML = `
+
 <div style="
 grid-column:1/-1;
 text-align:center;
@@ -418,10 +442,11 @@ padding:40px;
 <h2>No products uploaded yet</h2>
 
 <p>
-Login to admin panel and upload products.
+Open Admin Panel and upload products
 </p>
 
 </div>
+
 `;
 
 return;
@@ -439,21 +464,27 @@ container.innerHTML += `
 <h3>${p.name}</h3>
 
 <div class="stock">
-Stock Available: ${p.quantity}
+Stock: ${p.quantity}
 </div>
 
 <div class="price">
 KSh ${Number(p.price).toLocaleString()}
 </div>
 
-<button class="buy"
+<button
+class="buy"
 onclick="showPayment('${p.name} - KSh ${p.price}')">
+
 Buy Now
+
 </button>
 
-<button class="cart"
+<button
+class="cart"
 onclick="addToCart('${p.name}',${p.price})">
+
 Add to Cart
+
 </button>
 
 </div>
@@ -484,12 +515,13 @@ function addToCart(model,price){
 
 cart.push({
 model:model,
-price:price
+price:Number(price)
 });
 
 updateCart();
 
-document.getElementById("cartModal").style.display="block";
+document.getElementById("cartModal").style.display =
+"block";
 
 }
 
@@ -517,7 +549,7 @@ let html = "";
 
 cart.forEach((item,index)=>{
 
-total += Number(item.price);
+total += item.price;
 
 html += `
 
@@ -529,14 +561,17 @@ padding:10px;
 ${item.model}<br>
 
 <b>
-KSh ${Number(item.price).toLocaleString()}
+KSh ${item.price.toLocaleString()}
 </b>
 
 <br><br>
 
-<button class="delete"
+<button
+class="delete"
 onclick="removeItem(${index})">
+
 Remove
+
 </button>
 
 </div>
@@ -565,13 +600,15 @@ updateCart();
 
 function openCart(){
 
-document.getElementById("cartModal").style.display="block";
+document.getElementById("cartModal").style.display =
+"block";
 
 }
 
 function closeCart(){
 
-document.getElementById("cartModal").style.display="none";
+document.getElementById("cartModal").style.display =
+"none";
 
 }
 
@@ -609,13 +646,13 @@ message +=
 
 cart.forEach((item,index)=>{
 
-total += Number(item.price);
+total += item.price;
 
 message +=
 (index+1)+". "+
 item.model+
 " - KSh "+
-Number(item.price).toLocaleString()+
+item.price.toLocaleString()+
 "%0A";
 
 });
@@ -633,17 +670,19 @@ message,
 
 }
 
-/* ADMIN LOGIN */
+/* ADMIN */
 
 function openAdmin(){
 
-document.getElementById("adminLoginModal").style.display="block";
+document.getElementById("adminLoginModal").style.display =
+"block";
 
 }
 
 function closeAdminLogin(){
 
-document.getElementById("adminLoginModal").style.display="none";
+document.getElementById("adminLoginModal").style.display =
+"none";
 
 }
 
@@ -656,7 +695,8 @@ if(password==="1234"){
 
 closeAdminLogin();
 
-document.getElementById("adminPanelModal").style.display="block";
+document.getElementById("adminPanelModal").style.display =
+"block";
 
 loadAdminProducts();
 
@@ -670,7 +710,8 @@ alert("Wrong password");
 
 function closeAdminPanel(){
 
-document.getElementById("adminPanelModal").style.display="none";
+document.getElementById("adminPanelModal").style.display =
+"none";
 
 }
 
@@ -681,6 +722,8 @@ document
 .addEventListener("change",function(e){
 
 let file = e.target.files[0];
+
+if(!file) return;
 
 let reader = new FileReader();
 
@@ -715,7 +758,15 @@ document.getElementById("productQuantity").value;
 
 if(name==="" || price==="" || quantity===""){
 
-alert("Fill all fields");
+alert("Please fill all fields");
+
+return;
+
+}
+
+if(uploadedImage===""){
+
+alert("Please upload product image");
 
 return;
 
@@ -724,8 +775,8 @@ return;
 products.push({
 
 name:name,
-price:price,
-quantity:quantity,
+price:Number(price),
+quantity:Number(quantity),
 image:uploadedImage
 
 });
@@ -741,7 +792,10 @@ document.getElementById("productName").value="";
 document.getElementById("productPrice").value="";
 document.getElementById("productQuantity").value="";
 document.getElementById("productImage").value="";
-document.getElementById("previewImage").style.display=
+
+uploadedImage="";
+
+document.getElementById("previewImage").style.display =
 "none";
 
 loadShop();
@@ -750,7 +804,7 @@ loadAdminProducts();
 
 }
 
-/* ADMIN PRODUCTS */
+/* LOAD ADMIN PRODUCTS */
 
 function loadAdminProducts(){
 
@@ -760,8 +814,9 @@ document.getElementById("adminProducts");
 container.innerHTML = "";
 
 products =
-JSON.parse(localStorage.getItem("nahatech_products"))
-|| [];
+JSON.parse(
+localStorage.getItem("nahatech_products")
+) || [];
 
 products.forEach((item,index)=>{
 
@@ -789,13 +844,17 @@ background:#1976d2;
 color:white;
 "
 onclick="editProduct(${index})">
+
 Edit
+
 </button>
 
 <button
 class="delete"
 onclick="deleteProduct(${index})">
+
 Delete
+
 </button>
 
 </div>
@@ -810,6 +869,8 @@ Delete
 
 function deleteProduct(index){
 
+if(confirm("Delete this product?")){
+
 products.splice(index,1);
 
 localStorage.setItem(
@@ -820,6 +881,8 @@ JSON.stringify(products)
 loadShop();
 
 loadAdminProducts();
+
+}
 
 }
 
@@ -841,13 +904,14 @@ products[index].quantity
 
 if(newPrice!==null){
 
-products[index].price = newPrice;
+products[index].price = Number(newPrice);
 
 }
 
 if(newQuantity!==null){
 
-products[index].quantity = newQuantity;
+products[index].quantity =
+Number(newQuantity);
 
 }
 

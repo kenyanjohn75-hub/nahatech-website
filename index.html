@@ -21,8 +21,6 @@ background:#f5f5f5;
 color:#333;
 }
 
-/* HEADER */
-
 header{
 background:#0a0a23;
 color:white;
@@ -40,8 +38,6 @@ align-items:center;
 flex-wrap:wrap;
 gap:10px;
 }
-
-/* LOGO */
 
 .logo-section{
 display:flex;
@@ -103,8 +99,6 @@ background:#25D366;
 transform:scale(1.05);
 }
 
-/* HERO */
-
 .hero{
 background:linear-gradient(to right,#141e30,#243b55);
 color:white;
@@ -121,8 +115,6 @@ margin-bottom:10px;
 font-size:18px;
 opacity:0.9;
 }
-
-/* PRODUCTS */
 
 .container{
 display:grid;
@@ -188,16 +180,12 @@ background:red;
 color:white;
 }
 
-/* FOOTER */
-
 footer{
 background:#0a0a23;
 color:white;
 text-align:center;
 padding:20px;
 }
-
-/* MODALS */
 
 .modal{
 display:none;
@@ -243,8 +231,6 @@ width:90%;
 padding:12px;
 }
 
-/* ADMIN */
-
 .admin-product{
 border:1px solid #ddd;
 padding:10px;
@@ -258,8 +244,6 @@ height:100px;
 object-fit:cover;
 border-radius:10px;
 }
-
-/* WHATSAPP */
 
 .whatsapp-chat{
 position:fixed;
@@ -280,8 +264,6 @@ box-shadow:0 4px 10px rgba(0,0,0,0.3);
 .whatsapp-chat img{
 width:25px;
 }
-
-/* MOBILE */
 
 @media(max-width:768px){
 
@@ -323,8 +305,6 @@ font-size:16px;
 
 <body>
 
-<!-- HEADER -->
-
 <header>
 
 <nav>
@@ -362,8 +342,6 @@ Admin Panel
 
 </header>
 
-<!-- HERO -->
-
 <section class="hero">
 
 <h2>Affordable Laptops in Kenya</h2>
@@ -374,11 +352,7 @@ Shop HP, Dell, Lenovo and MacBook at the best prices in Kisii.
 
 </section>
 
-<!-- PRODUCTS -->
-
 <section class="container" id="shopProducts"></section>
-
-<!-- FOOTER -->
 
 <footer>
 
@@ -408,8 +382,56 @@ Shop HP, Dell, Lenovo and MacBook at the best prices in Kisii.
 
 <input id="clientPhone" placeholder="Phone Number">
 
-<button class="submit-btn" onclick="submitOrder()">
-Checkout via WhatsApp
+<button class="submit-btn" onclick="checkoutPayment()">
+Proceed to M-PESA Payment
+</button>
+
+</div>
+
+</div>
+
+<!-- MPESA MODAL -->
+
+<div id="paymentModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closePayment()">
+&times;
+</span>
+
+<h2 style="color:green;">
+📲 M-PESA PAYMENT
+</h2>
+
+<p>Please pay to:</p>
+
+<h3 style="color:#0a0a23;">
+M-PESA NUMBER
+</h3>
+
+<h1 style="color:green;">
+0142428852
+</h1>
+
+<p id="paymentProduct"></p>
+
+<input
+type="text"
+id="mpesaName"
+placeholder="Your Name">
+
+<input
+type="text"
+id="mpesaPhone"
+placeholder="Your Phone Number">
+
+<button
+class="submit-btn"
+onclick="confirmPayment()">
+
+I HAVE PAID
+
 </button>
 
 </div>
@@ -457,35 +479,19 @@ Login
 
 <h2>NAHATECH ADMIN PANEL</h2>
 
-<input
-type="text"
-id="productName"
-placeholder="Product Name">
+<input type="text" id="productName" placeholder="Product Name">
 
-<input
-type="number"
-id="productPrice"
-placeholder="Price in KSh">
+<input type="number" id="productPrice" placeholder="Price in KSh">
 
-<input
-type="number"
-id="productQuantity"
-placeholder="Quantity">
+<input type="number" id="productQuantity" placeholder="Quantity">
 
-<input
-type="file"
-id="productImage"
-accept="image/*">
+<input type="file" id="productImage" accept="image/*">
 
 <br><br>
 
 <img
 id="previewImage"
-style="
-width:120px;
-display:none;
-border-radius:10px;
-">
+style="width:120px;display:none;border-radius:10px;">
 
 <br><br>
 
@@ -503,8 +509,6 @@ Upload Product
 
 </div>
 
-<!-- WHATSAPP -->
-
 <a
 href="https://wa.me/254786467783"
 target="_blank"
@@ -518,14 +522,14 @@ Chat with us
 
 <script>
 
-/* STORAGE */
-
 let products =
 JSON.parse(localStorage.getItem("nahatech_products")) || [];
 
 let cart = [];
 
 let uploadedImage = "";
+
+let selectedProduct = "";
 
 /* LOAD SHOP */
 
@@ -548,9 +552,7 @@ padding:40px;
 
 <h2>No products uploaded yet</h2>
 
-<p>
-Open Admin Panel and upload products
-</p>
+<p>Open Admin Panel and upload products</p>
 
 </div>
 
@@ -602,17 +604,63 @@ Add to Cart
 
 }
 
-/* BUY NOW */
+/* PAYMENT */
 
 function showPayment(product){
 
+selectedProduct = product;
+
+document.getElementById("paymentProduct").innerHTML = `
+<b>${product}</b>
+`;
+
+document.getElementById("paymentModal").style.display =
+"block";
+
+}
+
+function closePayment(){
+
+document.getElementById("paymentModal").style.display =
+"none";
+
+}
+
+function confirmPayment(){
+
+let customer =
+document.getElementById("mpesaName").value;
+
+let phone =
+document.getElementById("mpesaPhone").value;
+
+if(customer==="" || phone===""){
+
+alert("Please fill all details");
+
+return;
+
+}
+
+let message =
+"Hello NAHATECH,%0A%0A" +
+
+"I have completed M-PESA payment.%0A%0A" +
+
+"Customer Name: " + customer + "%0A" +
+
+"Phone: " + phone + "%0A" +
+
+"Product: " + selectedProduct + "%0A%0A" +
+
+"Please confirm my order.";
+
 window.open(
-"https://wa.me/254786467783?text=" +
-encodeURIComponent(
-"Hello NAHATECH, I want to buy: " + product
-),
+"https://wa.me/254786467783?text=" + message,
 "_blank"
 );
+
+closePayment();
 
 }
 
@@ -719,9 +767,9 @@ document.getElementById("cartModal").style.display =
 
 }
 
-/* CHECKOUT */
+/* CHECKOUT PAYMENT */
 
-function submitOrder(){
+function checkoutPayment(){
 
 if(cart.length===0){
 
@@ -731,49 +779,33 @@ return;
 
 }
 
-let customer =
-document.getElementById("clientName").value;
-
-let phone =
-document.getElementById("clientPhone").value;
-
 let total = 0;
 
-let message =
-"🛒 *NAHATECH ORDER*%0A%0A";
-
-message +=
-"Customer: " + customer + "%0A";
-
-message +=
-"Phone: " + phone + "%0A%0A";
-
-message +=
-"*Items Ordered*%0A";
-
-cart.forEach((item,index)=>{
+cart.forEach(item=>{
 
 total += item.price;
 
-message +=
-(index+1)+". "+
-item.model+
-" - KSh "+
-item.price.toLocaleString()+
-"%0A";
-
 });
 
-message +=
-"%0A*TOTAL: KSh "+
-total.toLocaleString()+
-"*";
+selectedProduct =
+"Cart Order - Total KSh " +
+total.toLocaleString();
 
-window.open(
-"https://wa.me/254786467783?text=" +
-message,
-"_blank"
-);
+document.getElementById("paymentProduct").innerHTML = `
+
+<b>Total Cart Payment:</b><br><br>
+
+KSh ${total.toLocaleString()}
+
+<br><br>
+
+Pay to M-PESA Number:
+<b>0142428852</b>
+
+`;
+
+document.getElementById("paymentModal").style.display =
+"block";
 
 }
 
@@ -972,7 +1004,7 @@ Delete
 
 }
 
-/* DELETE PRODUCT */
+/* DELETE */
 
 function deleteProduct(index){
 
@@ -993,7 +1025,7 @@ loadAdminProducts();
 
 }
 
-/* EDIT PRODUCT */
+/* EDIT */
 
 function editProduct(index){
 
@@ -1040,4 +1072,4 @@ loadShop();
 </script>
 
 </body>
-</html>
+  </html>

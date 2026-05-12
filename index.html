@@ -138,6 +138,7 @@ text-align:center;
 padding:20px;
 }
 
+/* MODALS */
 .modal{
 display:none;
 position:fixed;
@@ -182,6 +183,7 @@ width:90%;
 padding:12px;
 }
 
+/* WHATSAPP */
 .whatsapp-chat{
 position:fixed;
 bottom:20px;
@@ -264,17 +266,48 @@ Proceed to Payment
 <input id="mpesaName" placeholder="Name">
 <input id="mpesaPhone" placeholder="Phone">
 
-<button class="submit-btn" onclick="confirmPayment">
+<button class="submit-btn" onclick="confirmPayment()">
 I HAVE PAID
 </button>
 
 </div>
 </div>
 
+<!-- ADMIN LOGIN -->
+<div id="adminLoginModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeAdminLogin()">&times;</span>
+
+<h2>Admin Login</h2>
+<input type="password" id="adminPassword" placeholder="Enter Password">
+
+<button class="submit-btn" onclick="loginAdmin()">
+Login
+</button>
+
+</div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanelModal" class="modal">
+<div class="modal-content">
+<span class="close" onclick="closeAdminPanel()">&times;</span>
+
+<h2>Admin Panel</h2>
+
+<div id="adminProducts"></div>
+
+</div>
+</div>
+
+<a href="https://wa.me/254786467783" target="_blank" class="whatsapp-chat">
+<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
+Chat
+</a>
+
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
 
 <script>
 
@@ -287,19 +320,16 @@ appId:"1:436862933673:web:35c6efd934c6b58a2227b8"
 });
 
 const db = firebase.firestore();
-const storage = firebase.storage();
 
 let cart=[];
 let selectedProduct="";
 
-/* FIXED PRODUCT LOADER */
+/* LOAD PRODUCTS (FIXED) */
 async function loadShop(){
 let container=document.getElementById("shopProducts");
-
 container.innerHTML="<h3>Loading products...</h3>";
 
 try{
-
 const snapshot=await db.collection("products").get();
 
 if(snapshot.empty){
@@ -340,6 +370,67 @@ container.innerHTML="<h3 style='color:red'>Failed to load products</h3>";
 }
 }
 
+/* ADMIN */
+function openAdmin(){
+document.getElementById("adminLoginModal").style.display="block";
+}
+
+function closeAdminLogin(){
+document.getElementById("adminLoginModal").style.display="none";
+}
+
+function loginAdmin(){
+let pass=document.getElementById("adminPassword").value;
+
+if(pass==="1234"){
+closeAdminLogin();
+document.getElementById("adminPanelModal").style.display="block";
+loadAdminProducts();
+}else{
+alert("Wrong password");
+}
+}
+
+function closeAdminPanel(){
+document.getElementById("adminPanelModal").style.display="none";
+}
+
+/* ADMIN LOAD FIXED */
+async function loadAdminProducts(){
+let c=document.getElementById("adminProducts");
+c.innerHTML="Loading...";
+
+try{
+const snap=await db.collection("products").get();
+
+if(snap.empty){
+c.innerHTML="No products";
+return;
+}
+
+let html="";
+
+snap.forEach(d=>{
+let p=d.data();
+
+html+=`
+<div class="card">
+<img src="${p.image}">
+<h3>${p.name}</h3>
+<p>KSh ${p.price}</p>
+<p>Stock: ${p.quantity}</p>
+</div>
+`;
+});
+
+c.innerHTML=html;
+
+}catch(e){
+console.error(e);
+c.innerHTML="Failed to load admin products";
+}
+}
+
 /* CART */
 function addToCart(name,price){
 cart.push({name,price:Number(price)});
@@ -365,8 +456,7 @@ total+=i.price;
 
 html+=`
 <div>
-${i.name}<br>
-<b>KSh ${i.price}</b>
+${i.name} - KSh ${i.price}
 <button class="delete" onclick="removeItem(${index})">X</button>
 </div>
 `;
@@ -427,4 +517,4 @@ loadShop();
 </script>
 
 </body>
-</html>
+  </html>

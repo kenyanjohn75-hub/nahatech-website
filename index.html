@@ -3,14 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>NAHATECH LTD</title>
 
 <style>
-
 body{
 margin:0;
-font-family:Arial,sans-serif;
+font-family:Arial;
 background:#f5f5f5;
 }
 
@@ -27,19 +25,11 @@ nav{
 display:flex;
 justify-content:space-between;
 align-items:center;
-flex-wrap:wrap;
-}
-
-.logo-section{
-display:flex;
-align-items:center;
-gap:10px;
 }
 
 .site-logo{
-width:55px;
-height:55px;
-object-fit:contain;
+width:50px;
+height:50px;
 background:white;
 border-radius:10px;
 padding:5px;
@@ -49,8 +39,8 @@ padding:5px;
 margin:5px;
 padding:10px;
 border:none;
-border-radius:5px;
 cursor:pointer;
+border-radius:5px;
 font-weight:bold;
 }
 
@@ -76,14 +66,13 @@ background:white;
 padding:15px;
 border-radius:10px;
 text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
 .card img{
 width:100%;
 height:180px;
 object-fit:cover;
-border-radius:8px;
+border-radius:10px;
 }
 
 .price{color:green;font-weight:bold;}
@@ -99,14 +88,7 @@ cursor:pointer;
 
 .buy{background:green;color:white;}
 .cart{background:orange;color:white;}
-.delete{background:red;color:white;color:white;}
-
-footer{
-background:#0a0a23;
-color:white;
-text-align:center;
-padding:20px;
-}
+.delete{background:red;color:white;}
 
 .modal{
 display:none;
@@ -139,8 +121,8 @@ input{
 width:90%;
 padding:10px;
 margin:8px 0;
-border-radius:5px;
 border:1px solid #ddd;
+border-radius:5px;
 }
 
 .submit-btn{
@@ -150,6 +132,13 @@ width:90%;
 padding:12px;
 border:none;
 border-radius:5px;
+}
+
+footer{
+background:#0a0a23;
+color:white;
+text-align:center;
+padding:20px;
 }
 
 .whatsapp{
@@ -162,7 +151,6 @@ padding:12px;
 border-radius:50px;
 text-decoration:none;
 }
-
 </style>
 </head>
 
@@ -170,24 +158,19 @@ text-decoration:none;
 
 <header>
 <nav>
-
-<div class="logo-section">
 <img src="logo.png" class="site-logo">
-<h2>NAHATECH LTD</h2>
-</div>
 
 <div class="nav-buttons">
 <button class="cart-btn" onclick="openCart()">🛒 Cart</button>
 <button class="admin-btn" onclick="openAdmin()">Admin</button>
 </div>
-
 </nav>
 </header>
 
-<section class="hero">
+<div class="hero">
 <h2>Affordable Laptops in Kenya</h2>
 <p>HP | Dell | Lenovo | MacBook</p>
-</section>
+</div>
 
 <section class="container" id="shopProducts"></section>
 
@@ -199,13 +182,12 @@ text-decoration:none;
 <div class="modal" id="cartModal">
 <div class="modal-content">
 <span class="close" onclick="closeCart()">&times;</span>
-<h2>Cart</h2>
 
+<h2>Cart</h2>
 <div id="cartBox"></div>
 <div id="cartTotal"></div>
 
 <button class="submit-btn" onclick="checkout()">Checkout</button>
-
 </div>
 </div>
 
@@ -214,7 +196,7 @@ text-decoration:none;
 <div class="modal-content">
 <span class="close" onclick="closePay()">&times;</span>
 
-<h2>M-PESA PAY</h2>
+<h2>M-PESA</h2>
 <h3>0142428852</h3>
 
 <p id="payText"></p>
@@ -223,7 +205,6 @@ text-decoration:none;
 <input id="phone" placeholder="Phone">
 
 <button class="submit-btn" onclick="confirmPay()">I HAVE PAID</button>
-
 </div>
 </div>
 
@@ -234,9 +215,7 @@ text-decoration:none;
 
 <h2>Admin Login</h2>
 <input type="password" id="pass" placeholder="Password">
-
 <button class="submit-btn" onclick="login()">Login</button>
-
 </div>
 </div>
 
@@ -265,7 +244,7 @@ text-decoration:none;
 
 <a class="whatsapp" href="https://wa.me/254786467783">WhatsApp</a>
 
-<!-- FIREBASE -->
+<!-- FIREBASE (ONLY COMPAT - FIXED) -->
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
@@ -273,15 +252,15 @@ text-decoration:none;
 <script>
 
 firebase.initializeApp({
-apiKey:"AIzaSyC4zvGgSIlN6pk2EaphsqaVavJJz9BkjkU",
-authDomain:"nahatech-d3b4d.firebaseapp.com",
-projectId:"nahatech-d3b4d",
-storageBucket:"nahatech-d3b4d.firebasestorage.app",
-appId:"1:436862933673:web:35c6efd934c6b58a2227b8"
+apiKey:"YOUR_API_KEY",
+authDomain:"YOUR_AUTH_DOMAIN",
+projectId:"YOUR_PROJECT_ID",
+storageBucket:"YOUR_STORAGE_BUCKET",
+appId:"YOUR_APP_ID"
 });
 
-const db=firebase.firestore();
-const storage=firebase.storage();
+const db = firebase.firestore();
+const storage = firebase.storage();
 
 let cart=[];
 let selected="";
@@ -292,7 +271,7 @@ let box=document.getElementById("shopProducts");
 box.innerHTML="Loading...";
 
 try{
-let snap=await db.collection("products").get();
+const snap=await db.collection("products").get();
 
 if(snap.empty){
 box.innerHTML="No products";
@@ -308,7 +287,7 @@ html+=`
 <div class="card">
 <img src="${p.image}">
 <h3>${p.name}</h3>
-<div class="stock">Stock:${p.quantity}</div>
+<div class="stock">Stock: ${p.quantity}</div>
 <div class="price">KSh ${p.price}</div>
 
 <button class="buy" onclick="pay('${p.name} - ${p.price}')">Buy</button>
@@ -320,6 +299,7 @@ html+=`
 box.innerHTML=html;
 
 }catch(e){
+console.log(e);
 box.innerHTML="Error loading products";
 }
 }
@@ -334,7 +314,7 @@ if(document.getElementById("pass").value==="1234"){
 closeAdmin();
 document.getElementById("adminPanel").style.display="block";
 loadAdmin();
-}else alert("Wrong");
+}else alert("Wrong password");
 }
 
 /* IMAGE PREVIEW */
@@ -350,7 +330,7 @@ document.getElementById("preview").style.display="block";
 r.readAsDataURL(f);
 });
 
-/* ADD PRODUCT */
+/* ADD PRODUCT (FIXED) */
 async function addProduct(){
 
 let name=document.getElementById("pname").value;
@@ -358,28 +338,43 @@ let price=document.getElementById("pprice").value;
 let qty=document.getElementById("pqty").value;
 let file=document.getElementById("pimg").files[0];
 
-if(!name||!price||!qty||!file)return alert("Fill all");
+if(!name||!price||!qty||!file){
+alert("Fill all fields");
+return;
+}
 
-let ref=storage.ref("products/"+Date.now()+file.name);
+try{
+
+const ref=storage.ref("products/"+Date.now()+file.name);
 
 await ref.put(file);
 
-let url=await ref.getDownloadURL();
+const url=await ref.getDownloadURL();
 
 await db.collection("products").add({
-name,price:Number(price),quantity:Number(qty),image:url
+name,
+price:Number(price),
+quantity:Number(qty),
+image:url
 });
 
-alert("Uploaded");
+alert("Uploaded!");
 
 loadProducts();
 loadAdmin();
+
+}catch(err){
+console.log(err);
+alert(err.message);
+}
 }
 
 /* ADMIN LIST */
 async function loadAdmin(){
 let box=document.getElementById("adminProducts");
-let snap=await db.collection("products").get();
+box.innerHTML="Loading...";
+
+const snap=await db.collection("products").get();
 
 let html="";
 
@@ -409,7 +404,7 @@ html+=`${i.n} - ${i.p}<br>`;
 });
 
 box.innerHTML=html;
-document.getElementById("cartTotal").innerHTML="Total:"+total;
+document.getElementById("cartTotal").innerHTML="Total: "+total;
 }
 
 function openCart(){document.getElementById("cartModal").style.display="block";}

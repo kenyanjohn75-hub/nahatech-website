@@ -14,6 +14,7 @@ color:white;
 padding:15px;
 position:sticky;
 top:0;
+z-index:1000;
 }
 
 nav{
@@ -38,6 +39,7 @@ background:white;
 padding:15px;
 border-radius:10px;
 text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 .card img{
@@ -63,6 +65,7 @@ display:none;
 position:fixed;
 top:0;left:0;width:100%;height:100%;
 background:rgba(0,0,0,0.6);
+z-index:2000;
 }
 
 .modal-content{
@@ -110,7 +113,7 @@ cursor:pointer;
 
 <div class="container" id="shopProducts"></div>
 
-<!-- ADMIN LOGIN -->
+<!-- LOGIN -->
 <div class="modal" id="loginModal">
 <div class="modal-content">
 <span class="close" onclick="closeLogin()">&times;</span>
@@ -120,7 +123,7 @@ cursor:pointer;
 </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ADMIN -->
 <div class="modal" id="adminPanel">
 <div class="modal-content">
 <span class="close" onclick="closeAdmin()">&times;</span>
@@ -142,7 +145,7 @@ cursor:pointer;
 </div>
 </div>
 
-<!-- FIREBASE (COMPAT ONLY - FIXED) -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
@@ -161,16 +164,18 @@ appId: "1:436862933673:web:59f57109c3ff2ce32227b8"
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-/* LOAD PRODUCTS */
+/* LOAD PRODUCTS (FIXED SAFE VERSION) */
 async function loadProducts(){
 
 let box=document.getElementById("shopProducts");
-box.innerHTML="Loading...";
+box.innerHTML="Loading products...";
+
+try{
 
 const snap=await db.collection("products").get();
 
 if(snap.empty){
-box.innerHTML="No products yet";
+box.innerHTML="No products found";
 return;
 }
 
@@ -181,18 +186,24 @@ let p=doc.data();
 
 html+=`
 <div class="card">
-<img src="${p.image}">
-<h3>${p.name}</h3>
-<p>Stock: ${p.quantity}</p>
-<h4>KSh ${p.price}</h4>
+<img src="${p.image || ''}">
+<h3>${p.name || 'No name'}</h3>
+<p>Price: KSh ${p.price || 0}</p>
+<p>Stock: ${p.quantity || 0}</p>
 </div>
 `;
 });
 
 box.innerHTML=html;
+
+}catch(err){
+console.log(err);
+box.innerHTML="Error loading products";
 }
 
-/* ADMIN LOGIN */
+}
+
+/* ADMIN */
 function openAdmin(){
 document.getElementById("loginModal").style.display="block";
 }
@@ -241,18 +252,21 @@ alert("Fill all fields");
 return;
 }
 
-const ref = storage.ref("products/" + Date.now() + file.name);
-
+const ref=storage.ref("products/"+Date.now()+file.name);
 await ref.put(file);
 
-const url = await ref.getDownloadURL();
+const url=await ref.getDownloadURL();
 
-await db.collection("products").add({
+const data={
 name:name,
 price:Number(price),
 quantity:Number(qty),
 image:url
-});
+};
+
+console.log("Saving:",data);
+
+await db.collection("products").add(data);
 
 alert("Upload successful!");
 
@@ -278,10 +292,11 @@ let html="";
 
 snap.forEach(doc=>{
 let p=doc.data();
-html+=`<p>${p.name} - KSh ${p.price}</p>`;
+html+=`<p>${p.name || 'No name'} - KSh ${p.price || 0}</p>`;
 });
 
 box.innerHTML=html;
+
 }
 
 /* START */

@@ -6,15 +6,12 @@
 
 <title>NAHATECH LTD</title>
 
-<meta name="description" content="Affordable laptops in Kenya from NAHATECH">
-
 <style>
 
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#f5f5f5;
-color:#333;
 }
 
 header{
@@ -24,7 +21,6 @@ padding:15px;
 position:sticky;
 top:0;
 z-index:1000;
-box-shadow:0 2px 10px rgba(0,0,0,0.3);
 }
 
 nav{
@@ -32,65 +28,46 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 flex-wrap:wrap;
-gap:10px;
 }
 
 .logo-section{
 display:flex;
 align-items:center;
-gap:12px;
-}
-
-.site-logo{
-width:60px;
-height:60px;
-object-fit:contain;
-border-radius:12px;
-background:white;
-padding:5px;
-}
-
-.brand-text h1{
-margin:0;
-font-size:28px;
-color:white;
-}
-
-.brand-text p{
-margin:0;
-font-size:13px;
-color:#d4d4d4;
-}
-
-.nav-buttons{
-display:flex;
 gap:10px;
 }
 
-.cart-btn,
-.admin-btn{
-padding:10px 15px;
+.site-logo{
+width:55px;
+height:55px;
+object-fit:contain;
+background:white;
+border-radius:10px;
+padding:5px;
+}
+
+.nav-buttons button{
+margin:5px;
+padding:10px;
 border:none;
 border-radius:5px;
 cursor:pointer;
 font-weight:bold;
-color:white;
 }
 
-.cart-btn{background:orange;}
-.admin-btn{background:#25D366;}
+.cart-btn{background:orange;color:white;}
+.admin-btn{background:#25D366;color:white;}
 
 .hero{
 background:linear-gradient(to right,#141e30,#243b55);
 color:white;
 text-align:center;
-padding:50px 20px;
+padding:40px;
 }
 
 .container{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+gap:15px;
 padding:20px;
 }
 
@@ -98,38 +75,31 @@ padding:20px;
 background:white;
 padding:15px;
 border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
 text-align:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
 .card img{
 width:100%;
-height:200px;
+height:180px;
 object-fit:cover;
 border-radius:8px;
 }
 
-.price{
-color:green;
-font-weight:bold;
-margin:10px 0;
-font-size:20px;
-}
-
+.price{color:green;font-weight:bold;}
 .stock{font-size:14px;}
 
 button{
-padding:10px 15px;
+padding:8px 12px;
 margin:5px;
 border:none;
-cursor:pointer;
 border-radius:5px;
-font-weight:bold;
+cursor:pointer;
 }
 
 .buy{background:green;color:white;}
 .cart{background:orange;color:white;}
-.delete{background:red;color:white;}
+.delete{background:red;color:white;color:white;}
 
 footer{
 background:#0a0a23;
@@ -138,13 +108,11 @@ text-align:center;
 padding:20px;
 }
 
-/* MODALS */
 .modal{
 display:none;
 position:fixed;
-z-index:2000;
-left:0;
 top:0;
+left:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,0.6);
@@ -153,19 +121,18 @@ overflow:auto;
 
 .modal-content{
 background:white;
+width:90%;
+max-width:500px;
 margin:5% auto;
 padding:20px;
 border-radius:10px;
-width:90%;
-max-width:500px;
 text-align:center;
 }
 
 .close{
 float:right;
-font-size:25px;
 cursor:pointer;
-font-weight:bold;
+font-size:25px;
 }
 
 input{
@@ -181,25 +148,20 @@ background:green;
 color:white;
 width:90%;
 padding:12px;
+border:none;
+border-radius:5px;
 }
 
-/* WHATSAPP */
-.whatsapp-chat{
+.whatsapp{
 position:fixed;
 bottom:20px;
 right:20px;
 background:#25D366;
 color:white;
-padding:12px 18px;
+padding:12px;
 border-radius:50px;
 text-decoration:none;
-display:flex;
-align-items:center;
-gap:10px;
-z-index:999;
 }
-
-.whatsapp-chat img{width:25px;}
 
 </style>
 </head>
@@ -211,10 +173,7 @@ z-index:999;
 
 <div class="logo-section">
 <img src="logo.png" class="site-logo">
-<div class="brand-text">
-<h1>NAHATECH LTD</h1>
-<p>Smart Tech Solutions</p>
-</div>
+<h2>NAHATECH LTD</h2>
 </div>
 
 <div class="nav-buttons">
@@ -227,87 +186,89 @@ z-index:999;
 
 <section class="hero">
 <h2>Affordable Laptops in Kenya</h2>
-<p>Shop HP, Dell, Lenovo and MacBook at best prices.</p>
+<p>HP | Dell | Lenovo | MacBook</p>
 </section>
 
 <section class="container" id="shopProducts"></section>
 
 <footer>
-<p>📍 Kisii, Kenya | 📞 +254786467783</p>
-<p>© 2026 NAHATECH LTD</p>
+<p>📍 Kisii | 📞 +254786467783</p>
 </footer>
 
 <!-- CART -->
-<div id="cartModal" class="modal">
+<div class="modal" id="cartModal">
 <div class="modal-content">
 <span class="close" onclick="closeCart()">&times;</span>
 <h2>Cart</h2>
 
-<div id="cartModel"></div>
-<div id="cartPrice"></div>
+<div id="cartBox"></div>
+<div id="cartTotal"></div>
 
-<button class="submit-btn" onclick="checkoutPayment()">
-Proceed to Payment
-</button>
+<button class="submit-btn" onclick="checkout()">Checkout</button>
 
 </div>
 </div>
 
 <!-- PAYMENT -->
-<div id="paymentModal" class="modal">
+<div class="modal" id="payModal">
 <div class="modal-content">
-<span class="close" onclick="closePayment()">&times;</span>
+<span class="close" onclick="closePay()">&times;</span>
 
-<h2>M-PESA PAYMENT</h2>
-<h1>0142428852</h1>
+<h2>M-PESA PAY</h2>
+<h3>0142428852</h3>
 
-<p id="paymentProduct"></p>
+<p id="payText"></p>
 
-<input id="mpesaName" placeholder="Name">
-<input id="mpesaPhone" placeholder="Phone">
+<input id="name" placeholder="Name">
+<input id="phone" placeholder="Phone">
 
-<button class="submit-btn" onclick="confirmPayment()">
-I HAVE PAID
-</button>
+<button class="submit-btn" onclick="confirmPay()">I HAVE PAID</button>
 
 </div>
 </div>
 
 <!-- ADMIN LOGIN -->
-<div id="adminLoginModal" class="modal">
+<div class="modal" id="adminLogin">
 <div class="modal-content">
-<span class="close" onclick="closeAdminLogin()">&times;</span>
+<span class="close" onclick="closeAdmin()">&times;</span>
 
 <h2>Admin Login</h2>
-<input type="password" id="adminPassword" placeholder="Enter Password">
+<input type="password" id="pass" placeholder="Password">
 
-<button class="submit-btn" onclick="loginAdmin()">
-Login
-</button>
+<button class="submit-btn" onclick="login()">Login</button>
 
 </div>
 </div>
 
 <!-- ADMIN PANEL -->
-<div id="adminPanelModal" class="modal">
+<div class="modal" id="adminPanel">
 <div class="modal-content">
-<span class="close" onclick="closeAdminPanel()">&times;</span>
+<span class="close" onclick="closePanel()">&times;</span>
 
-<h2>Admin Panel</h2>
+<h2>Add Product</h2>
+
+<input id="pname" placeholder="Name">
+<input id="pprice" placeholder="Price">
+<input id="pqty" placeholder="Quantity">
+<input type="file" id="pimg">
+
+<img id="preview" style="width:100px;display:none;border-radius:10px;">
+
+<button class="submit-btn" onclick="addProduct()">Upload</button>
+
+<hr>
 
 <div id="adminProducts"></div>
 
 </div>
 </div>
 
-<a href="https://wa.me/254786467783" target="_blank" class="whatsapp-chat">
-<img src="https://cdn-icons-png.flaticon.com/512/733/733585.png">
-Chat
-</a>
+<a class="whatsapp" href="https://wa.me/254786467783">WhatsApp</a>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
 
 <script>
 
@@ -319,92 +280,22 @@ storageBucket:"nahatech-d3b4d.firebasestorage.app",
 appId:"1:436862933673:web:35c6efd934c6b58a2227b8"
 });
 
-const db = firebase.firestore();
+const db=firebase.firestore();
+const storage=firebase.storage();
 
 let cart=[];
-let selectedProduct="";
+let selected="";
 
-/* LOAD PRODUCTS (FIXED) */
-async function loadShop(){
-let container=document.getElementById("shopProducts");
-container.innerHTML="<h3>Loading products...</h3>";
-
-try{
-const snapshot=await db.collection("products").get();
-
-if(snapshot.empty){
-container.innerHTML="<h3>No products available</h3>";
-return;
-}
-
-let html="";
-
-snapshot.forEach(doc=>{
-let p=doc.data();
-
-html+=`
-<div class="card">
-<img src="${p.image}">
-<h3>${p.name}</h3>
-<div class="stock">Stock: ${p.quantity}</div>
-<div class="price">KSh ${Number(p.price).toLocaleString()}</div>
-
-<button class="buy"
-onclick="showPayment('${p.name} - KSh ${p.price}')">
-Buy
-</button>
-
-<button class="cart"
-onclick="addToCart('${p.name}',${p.price})">
-Add
-</button>
-</div>
-`;
-});
-
-container.innerHTML=html;
-
-}catch(err){
-console.error(err);
-container.innerHTML="<h3 style='color:red'>Failed to load products</h3>";
-}
-}
-
-/* ADMIN */
-function openAdmin(){
-document.getElementById("adminLoginModal").style.display="block";
-}
-
-function closeAdminLogin(){
-document.getElementById("adminLoginModal").style.display="none";
-}
-
-function loginAdmin(){
-let pass=document.getElementById("adminPassword").value;
-
-if(pass==="1234"){
-closeAdminLogin();
-document.getElementById("adminPanelModal").style.display="block";
-loadAdminProducts();
-}else{
-alert("Wrong password");
-}
-}
-
-function closeAdminPanel(){
-document.getElementById("adminPanelModal").style.display="none";
-}
-
-/* ADMIN LOAD FIXED */
-async function loadAdminProducts(){
-let c=document.getElementById("adminProducts");
-c.innerHTML="Loading...";
+/* LOAD PRODUCTS */
+async function loadProducts(){
+let box=document.getElementById("shopProducts");
+box.innerHTML="Loading...";
 
 try{
-const snap=await db.collection("products").get();
+let snap=await db.collection("products").get();
 
 if(snap.empty){
-c.innerHTML="No products";
+box.innerHTML="No products";
 return;
 }
 
@@ -417,102 +308,139 @@ html+=`
 <div class="card">
 <img src="${p.image}">
 <h3>${p.name}</h3>
-<p>KSh ${p.price}</p>
-<p>Stock: ${p.quantity}</p>
+<div class="stock">Stock:${p.quantity}</div>
+<div class="price">KSh ${p.price}</div>
+
+<button class="buy" onclick="pay('${p.name} - ${p.price}')">Buy</button>
+<button class="cart" onclick="add('${p.name}',${p.price})">Cart</button>
 </div>
 `;
 });
 
-c.innerHTML=html;
+box.innerHTML=html;
 
 }catch(e){
-console.error(e);
-c.innerHTML="Failed to load admin products";
+box.innerHTML="Error loading products";
 }
+}
+
+/* ADMIN */
+function openAdmin(){document.getElementById("adminLogin").style.display="block";}
+function closeAdmin(){document.getElementById("adminLogin").style.display="none";}
+function closePanel(){document.getElementById("adminPanel").style.display="none";}
+
+function login(){
+if(document.getElementById("pass").value==="1234"){
+closeAdmin();
+document.getElementById("adminPanel").style.display="block";
+loadAdmin();
+}else alert("Wrong");
+}
+
+/* IMAGE PREVIEW */
+document.getElementById("pimg").addEventListener("change",e=>{
+let f=e.target.files[0];
+if(!f)return;
+
+let r=new FileReader();
+r.onload=()=>{
+document.getElementById("preview").src=r.result;
+document.getElementById("preview").style.display="block";
+};
+r.readAsDataURL(f);
+});
+
+/* ADD PRODUCT */
+async function addProduct(){
+
+let name=document.getElementById("pname").value;
+let price=document.getElementById("pprice").value;
+let qty=document.getElementById("pqty").value;
+let file=document.getElementById("pimg").files[0];
+
+if(!name||!price||!qty||!file)return alert("Fill all");
+
+let ref=storage.ref("products/"+Date.now()+file.name);
+
+await ref.put(file);
+
+let url=await ref.getDownloadURL();
+
+await db.collection("products").add({
+name,price:Number(price),quantity:Number(qty),image:url
+});
+
+alert("Uploaded");
+
+loadProducts();
+loadAdmin();
+}
+
+/* ADMIN LIST */
+async function loadAdmin(){
+let box=document.getElementById("adminProducts");
+let snap=await db.collection("products").get();
+
+let html="";
+
+snap.forEach(d=>{
+let p=d.data();
+html+=`<p>${p.name} - ${p.price}</p>`;
+});
+
+box.innerHTML=html;
 }
 
 /* CART */
-function addToCart(name,price){
-cart.push({name,price:Number(price)});
-updateCart();
+function add(n,p){
+cart.push({n,p});
+update();
 openCart();
 }
 
-function updateCart(){
-let c=document.getElementById("cartModel");
-let p=document.getElementById("cartPrice");
-
-if(cart.length===0){
-c.innerHTML="Empty cart";
-p.innerHTML="";
-return;
-}
-
+function update(){
+let box=document.getElementById("cartBox");
 let total=0;
 let html="";
 
-cart.forEach((i,index)=>{
-total+=i.price;
-
-html+=`
-<div>
-${i.name} - KSh ${i.price}
-<button class="delete" onclick="removeItem(${index})">X</button>
-</div>
-`;
+cart.forEach(i=>{
+total+=i.p;
+html+=`${i.n} - ${i.p}<br>`;
 });
 
-c.innerHTML=html;
-p.innerHTML=`<h3>Total: KSh ${total}</h3>`;
+box.innerHTML=html;
+document.getElementById("cartTotal").innerHTML="Total:"+total;
 }
 
-function removeItem(i){
-cart.splice(i,1);
-updateCart();
-}
-
-function openCart(){
-document.getElementById("cartModal").style.display="block";
-}
-
-function closeCart(){
-document.getElementById("cartModal").style.display="none";
-}
+function openCart(){document.getElementById("cartModal").style.display="block";}
+function closeCart(){document.getElementById("cartModal").style.display="none";}
 
 /* PAYMENT */
-function showPayment(product){
-selectedProduct=product;
-document.getElementById("paymentProduct").innerText=product;
-document.getElementById("paymentModal").style.display="block";
+function pay(p){
+selected=p;
+document.getElementById("payText").innerText=p;
+document.getElementById("payModal").style.display="block";
 }
 
-function closePayment(){
-document.getElementById("paymentModal").style.display="none";
+function closePay(){document.getElementById("payModal").style.display="none";}
+
+function checkout(){
+let t=cart.reduce((a,b)=>a+b.p,0);
+pay("Cart Total "+t);
 }
 
-function checkoutPayment(){
-let total=cart.reduce((a,b)=>a+b.price,0);
-showPayment("Cart Total KSh "+total);
+function confirmPay(){
+let n=document.getElementById("name").value;
+let ph=document.getElementById("phone").value;
+
+if(!n||!ph)return alert("Fill all");
+
+window.open(`https://wa.me/254786467783?text=Order:${selected} Name:${n} Phone:${ph}`,"_blank");
+closePay();
 }
 
-function confirmPayment(){
-let name=document.getElementById("mpesaName").value;
-let phone=document.getElementById("mpesaPhone").value;
-
-if(!name||!phone){
-alert("Fill all fields");
-return;
-}
-
-window.open(
-`https://wa.me/254786467783?text=Order:%20${selectedProduct}%0AName:%20${name}%0APhone:%20${phone}`,
-"_blank"
-);
-
-closePayment();
-}
-
-loadShop();
+/* START */
+loadProducts();
 
 </script>
 

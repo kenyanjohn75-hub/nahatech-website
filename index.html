@@ -6,11 +6,7 @@
 <title>NAHATECH LTD</title>
 
 <style>
-body{
-margin:0;
-font-family:Arial;
-background:#f5f5f5;
-}
+body{margin:0;font-family:Arial;background:#f5f5f5;}
 
 header{
 background:#0a0a23;
@@ -18,7 +14,6 @@ color:white;
 padding:15px;
 position:sticky;
 top:0;
-z-index:1000;
 }
 
 nav{
@@ -28,30 +23,7 @@ align-items:center;
 }
 
 .site-logo{
-width:50px;
-height:50px;
-background:white;
-border-radius:10px;
-padding:5px;
-}
-
-.nav-buttons button{
-margin:5px;
-padding:10px;
-border:none;
-cursor:pointer;
-border-radius:5px;
-font-weight:bold;
-}
-
-.cart-btn{background:orange;color:white;}
-.admin-btn{background:#25D366;color:white;}
-
-.hero{
-background:linear-gradient(to right,#141e30,#243b55);
-color:white;
-text-align:center;
-padding:40px;
+width:50px;height:50px;background:white;border-radius:10px;
 }
 
 .container{
@@ -75,30 +47,22 @@ object-fit:cover;
 border-radius:10px;
 }
 
-.price{color:green;font-weight:bold;}
-.stock{font-size:14px;}
-
 button{
-padding:8px 12px;
+padding:10px;
 margin:5px;
 border:none;
-border-radius:5px;
 cursor:pointer;
+border-radius:5px;
 }
 
 .buy{background:green;color:white;}
 .cart{background:orange;color:white;}
-.delete{background:red;color:white;}
 
 .modal{
 display:none;
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+top:0;left:0;width:100%;height:100%;
 background:rgba(0,0,0,0.6);
-overflow:auto;
 }
 
 .modal-content{
@@ -108,13 +72,6 @@ max-width:500px;
 margin:5% auto;
 padding:20px;
 border-radius:10px;
-text-align:center;
-}
-
-.close{
-float:right;
-cursor:pointer;
-font-size:25px;
 }
 
 input{
@@ -134,22 +91,10 @@ border:none;
 border-radius:5px;
 }
 
-footer{
-background:#0a0a23;
-color:white;
-text-align:center;
-padding:20px;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:12px;
-border-radius:50px;
-text-decoration:none;
+.close{
+float:right;
+font-size:25px;
+cursor:pointer;
 }
 </style>
 </head>
@@ -159,62 +104,18 @@ text-decoration:none;
 <header>
 <nav>
 <img src="logo.png" class="site-logo">
-
-<div class="nav-buttons">
-<button class="cart-btn" onclick="openCart()">🛒 Cart</button>
-<button class="admin-btn" onclick="openAdmin()">Admin</button>
-</div>
+<button onclick="openAdmin()">Admin</button>
 </nav>
 </header>
 
-<div class="hero">
-<h2>Affordable Laptops in Kenya</h2>
-<p>HP | Dell | Lenovo | MacBook</p>
-</div>
-
-<section class="container" id="shopProducts"></section>
-
-<footer>
-<p>📍 Kisii | 📞 +254786467783</p>
-</footer>
-
-<!-- CART -->
-<div class="modal" id="cartModal">
-<div class="modal-content">
-<span class="close" onclick="closeCart()">&times;</span>
-
-<h2>Cart</h2>
-<div id="cartBox"></div>
-<div id="cartTotal"></div>
-
-<button class="submit-btn" onclick="checkout()">Checkout</button>
-</div>
-</div>
-
-<!-- PAYMENT -->
-<div class="modal" id="payModal">
-<div class="modal-content">
-<span class="close" onclick="closePay()">&times;</span>
-
-<h2>M-PESA</h2>
-<h3>0142428852</h3>
-
-<p id="payText"></p>
-
-<input id="name" placeholder="Name">
-<input id="phone" placeholder="Phone">
-
-<button class="submit-btn" onclick="confirmPay()">I HAVE PAID</button>
-</div>
-</div>
+<div class="container" id="shopProducts"></div>
 
 <!-- ADMIN LOGIN -->
-<div class="modal" id="adminLogin">
+<div class="modal" id="loginModal">
 <div class="modal-content">
-<span class="close" onclick="closeAdmin()">&times;</span>
-
+<span class="close" onclick="closeLogin()">&times;</span>
 <h2>Admin Login</h2>
-<input type="password" id="pass" placeholder="Password">
+<input id="pass" type="password" placeholder="Password">
 <button class="submit-btn" onclick="login()">Login</button>
 </div>
 </div>
@@ -222,29 +123,26 @@ text-decoration:none;
 <!-- ADMIN PANEL -->
 <div class="modal" id="adminPanel">
 <div class="modal-content">
-<span class="close" onclick="closePanel()">&times;</span>
+<span class="close" onclick="closeAdmin()">&times;</span>
 
 <h2>Add Product</h2>
 
-<input id="pname" placeholder="Name">
-<input id="pprice" placeholder="Price">
-<input id="pqty" placeholder="Quantity">
-<input type="file" id="pimg">
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Price">
+<input id="qty" placeholder="Quantity">
+<input type="file" id="img">
 
-<img id="preview" style="width:100px;display:none;border-radius:10px;">
+<img id="preview" style="width:100px;display:none;margin-top:10px;border-radius:10px;">
 
 <button class="submit-btn" onclick="addProduct()">Upload</button>
 
 <hr>
 
-<div id="adminProducts"></div>
-
+<div id="adminList"></div>
 </div>
 </div>
 
-<a class="whatsapp" href="https://wa.me/254786467783">WhatsApp</a>
-
-<!-- FIREBASE (ONLY COMPAT - FIXED) -->
+<!-- FIREBASE (COMPAT ONLY - FIXED) -->
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
@@ -252,113 +150,111 @@ text-decoration:none;
 <script>
 
 firebase.initializeApp({
-apiKey:"YOUR_API_KEY",
-authDomain:"YOUR_AUTH_DOMAIN",
-projectId:"YOUR_PROJECT_ID",
-storageBucket:"YOUR_STORAGE_BUCKET",
-appId:"YOUR_APP_ID"
+apiKey: "AIzaSyC4zvGgSIlN6pk2EaphsqaVavJJz9BkjkU",
+authDomain: "nahatech-d3b4d.firebaseapp.com",
+projectId: "nahatech-d3b4d",
+storageBucket: "nahatech-d3b4d.appspot.com",
+messagingSenderId: "436862933673",
+appId: "1:436862933673:web:59f57109c3ff2ce32227b8"
 });
 
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-let cart=[];
-let selected="";
-
 /* LOAD PRODUCTS */
 async function loadProducts(){
+
 let box=document.getElementById("shopProducts");
 box.innerHTML="Loading...";
 
-try{
 const snap=await db.collection("products").get();
 
 if(snap.empty){
-box.innerHTML="No products";
+box.innerHTML="No products yet";
 return;
 }
 
 let html="";
 
-snap.forEach(d=>{
-let p=d.data();
+snap.forEach(doc=>{
+let p=doc.data();
 
 html+=`
 <div class="card">
 <img src="${p.image}">
 <h3>${p.name}</h3>
-<div class="stock">Stock: ${p.quantity}</div>
-<div class="price">KSh ${p.price}</div>
-
-<button class="buy" onclick="pay('${p.name} - ${p.price}')">Buy</button>
-<button class="cart" onclick="add('${p.name}',${p.price})">Cart</button>
+<p>Stock: ${p.quantity}</p>
+<h4>KSh ${p.price}</h4>
 </div>
 `;
 });
 
 box.innerHTML=html;
-
-}catch(e){
-console.log(e);
-box.innerHTML="Error loading products";
-}
 }
 
-/* ADMIN */
-function openAdmin(){document.getElementById("adminLogin").style.display="block";}
-function closeAdmin(){document.getElementById("adminLogin").style.display="none";}
-function closePanel(){document.getElementById("adminPanel").style.display="none";}
+/* ADMIN LOGIN */
+function openAdmin(){
+document.getElementById("loginModal").style.display="block";
+}
+
+function closeLogin(){
+document.getElementById("loginModal").style.display="none";
+}
 
 function login(){
 if(document.getElementById("pass").value==="1234"){
-closeAdmin();
+closeLogin();
 document.getElementById("adminPanel").style.display="block";
 loadAdmin();
 }else alert("Wrong password");
 }
 
-/* IMAGE PREVIEW */
-document.getElementById("pimg").addEventListener("change",e=>{
-let f=e.target.files[0];
-if(!f)return;
+function closeAdmin(){
+document.getElementById("adminPanel").style.display="none";
+}
 
-let r=new FileReader();
-r.onload=()=>{
-document.getElementById("preview").src=r.result;
+/* IMAGE PREVIEW */
+document.getElementById("img").addEventListener("change",e=>{
+let file=e.target.files[0];
+if(!file)return;
+
+let reader=new FileReader();
+reader.onload=()=>{
+document.getElementById("preview").src=reader.result;
 document.getElementById("preview").style.display="block";
 };
-r.readAsDataURL(f);
+reader.readAsDataURL(file);
 });
 
-/* ADD PRODUCT (FIXED) */
+/* ADD PRODUCT (FULL FIXED) */
 async function addProduct(){
 
-let name=document.getElementById("pname").value;
-let price=document.getElementById("pprice").value;
-let qty=document.getElementById("pqty").value;
-let file=document.getElementById("pimg").files[0];
+try{
+
+let name=document.getElementById("name").value;
+let price=document.getElementById("price").value;
+let qty=document.getElementById("qty").value;
+let file=document.getElementById("img").files[0];
 
 if(!name||!price||!qty||!file){
 alert("Fill all fields");
 return;
 }
 
-try{
-
-const ref=storage.ref("products/"+Date.now()+file.name);
+const ref = storage.ref("products/" + Date.now() + file.name);
 
 await ref.put(file);
 
-const url=await ref.getDownloadURL();
+const url = await ref.getDownloadURL();
 
 await db.collection("products").add({
-name,
+name:name,
 price:Number(price),
 quantity:Number(qty),
 image:url
 });
 
-alert("Uploaded!");
+alert("Upload successful!");
 
 loadProducts();
 loadAdmin();
@@ -367,71 +263,25 @@ loadAdmin();
 console.log(err);
 alert(err.message);
 }
+
 }
 
 /* ADMIN LIST */
 async function loadAdmin(){
-let box=document.getElementById("adminProducts");
+
+let box=document.getElementById("adminList");
 box.innerHTML="Loading...";
 
 const snap=await db.collection("products").get();
 
 let html="";
 
-snap.forEach(d=>{
-let p=d.data();
-html+=`<p>${p.name} - ${p.price}</p>`;
+snap.forEach(doc=>{
+let p=doc.data();
+html+=`<p>${p.name} - KSh ${p.price}</p>`;
 });
 
 box.innerHTML=html;
-}
-
-/* CART */
-function add(n,p){
-cart.push({n,p});
-update();
-openCart();
-}
-
-function update(){
-let box=document.getElementById("cartBox");
-let total=0;
-let html="";
-
-cart.forEach(i=>{
-total+=i.p;
-html+=`${i.n} - ${i.p}<br>`;
-});
-
-box.innerHTML=html;
-document.getElementById("cartTotal").innerHTML="Total: "+total;
-}
-
-function openCart(){document.getElementById("cartModal").style.display="block";}
-function closeCart(){document.getElementById("cartModal").style.display="none";}
-
-/* PAYMENT */
-function pay(p){
-selected=p;
-document.getElementById("payText").innerText=p;
-document.getElementById("payModal").style.display="block";
-}
-
-function closePay(){document.getElementById("payModal").style.display="none";}
-
-function checkout(){
-let t=cart.reduce((a,b)=>a+b.p,0);
-pay("Cart Total "+t);
-}
-
-function confirmPay(){
-let n=document.getElementById("name").value;
-let ph=document.getElementById("phone").value;
-
-if(!n||!ph)return alert("Fill all");
-
-window.open(`https://wa.me/254786467783?text=Order:${selected} Name:${n} Phone:${ph}`,"_blank");
-closePay();
 }
 
 /* START */

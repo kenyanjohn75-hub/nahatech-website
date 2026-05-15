@@ -383,9 +383,9 @@ image:"images/Caston C15 Bluetooth Speaker.jpg"
 },
 {
 name:"HP Elitebook 840 G3",
-price:25800,
-stock:3,
-image:"images/hp-elitebook-840-g3.jpg"
+price:35800,
+stock:13,
+image:"images/hp-elitebook-840-g3b.jpg"
 },
 
 {
@@ -464,6 +464,13 @@ price:2500,
 stock:15,
 image:"images/amaya-apb-f229-powerbank.jpg"
 }
+
+{
+name:"Amaya APB-P119 Power Bank 10000mAh",
+price:1500,
+stock:13,
+image:"images/amaya-apb-P119-powerbank.jpg"
+}
 ];
 
 /* RENDER PRODUCTS */
@@ -535,22 +542,78 @@ c.style.display = c.style.display === "block" ? "none" : "block";
 }
 
 /* WHATSAPP */
-function buyNow(name,price){
-window.open(`https://wa.me/254786467783?text=I want ${name} - KSh ${price}`);
+let selectedProduct = "";
+let selectedPrice = 0;
+
+function openPaymentPopup(product, price){
+
+selectedProduct = product;
+selectedPrice = price;
+
+document.getElementById("popupProduct").innerText = product;
+document.getElementById("popupPrice").innerText =
+"KSh " + price;
+
+document.getElementById("paymentPopup").style.display =
+"flex";
 }
 
-function checkoutWhatsApp(){
-let msg = "Order:%0A";
-let total = 0;
+function closePaymentPopup(){
+document.getElementById("paymentPopup").style.display =
+"none";
+}
 
-cart.forEach(i=>{
-msg += `${i.name} - ${i.price}%0A`;
-total += i.price;
+function buyNow(name, price){
+openPaymentPopup(name, price);
+}
+function checkoutWhatsApp(){
+
+if(cart.length === 0){
+alert("Cart is empty");
+return;
+}
+
+let total = 0;
+let products = "";
+
+cart.forEach(item=>{
+products += item.name + ", ";
+total += item.price;
 });
 
-msg += "Total: "+total;
+openPaymentPopup(products, total);
+}
+function confirmPayment(){
 
-window.open(`https://wa.me/254786467783?text=${msg}`);
+let name =
+document.getElementById("customerName").value;
+
+let phone =
+document.getElementById("customerPhone").value;
+
+if(name === "" || phone === ""){
+alert("Please fill all details");
+return;
+}
+
+let msg =
+`Hello NAHATECH LTD,
+I have paid via M-PESA.
+
+Name: ${name}
+Phone: ${phone}
+
+Product(s): ${selectedProduct}
+Amount: KSh ${selectedPrice}
+
+Paid to Pochi la Biashara:
+0142428852`;
+
+window.open(
+`https://wa.me/254786467783?text=${encodeURIComponent(msg)}`
+);
+
+closePaymentPopup();
 }
 
 /* MPESA */
@@ -599,5 +662,107 @@ alert("Product Added");
 
 </script>
 
+<!-- PASTE MPESA POPUP HERE -->
+
+<div id="paymentPopup" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:9999;
+justify-content:center;
+align-items:center;
+padding:15px;
+">
+
+<div style="
+background:#fff;
+width:100%;
+max-width:420px;
+border-radius:35px;
+padding:25px;
+position:relative;
+text-align:center;
+">
+
+<span onclick="closePaymentPopup()" style="
+position:absolute;
+right:20px;
+top:15px;
+font-size:35px;
+cursor:pointer;
+font-weight:bold;
+color:#666;
+">&times;</span>
+
+<h1 style="color:#2e7d32;font-size:38px;">
+📲 M-PESA Payment
+</h1>
+
+<p>Pochi la Biashara Number:</p>
+
+<div style="
+background:#02022c;
+padding:18px;
+border-radius:40px;
+font-size:40px;
+font-weight:bold;
+color:#ffb300;
+margin:15px 0;
+">
+0142428852
+</div>
+
+<div style="
+background:#f2f2f2;
+padding:18px;
+border-radius:25px;
+margin-bottom:20px;
+">
+
+<h3 id="popupProduct">Product Name</h3>
+
+<p id="popupPrice">KSh 0</p>
+
+<p>Pay to Pochi la Biashara: 0142428852</p>
+
+</div>
+
+<input
+type="text"
+id="customerName"
+placeholder="Your Name"
+style="width:100%;padding:15px;border-radius:30px;margin-bottom:10px;">
+
+<input
+type="number"
+id="customerPhone"
+placeholder="M-PESA Phone Number"
+style="width:100%;padding:15px;border-radius:30px;margin-bottom:15px;">
+
+<button onclick="confirmPayment()" style="
+width:100%;
+padding:15px;
+background:green;
+color:white;
+border:none;
+border-radius:30px;
+font-size:22px;
+font-weight:bold;
+">
+✅ I HAVE PAID
+</button>
+
+<p style="margin-top:10px;">
+After payment click button to confirm via WhatsApp
+</p>
+
+</div>
+</div>
+
 </body>
-  </html>
+</html>
+

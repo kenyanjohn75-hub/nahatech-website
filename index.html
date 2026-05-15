@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>NAHATECH LTD - Premium Laptops Kenya</title>
+<title>NAHATECH LTD -Tech That Moves You Forward</title>
 
 <style>
 
@@ -42,18 +42,13 @@ align-items:center;
 gap:10px;
 }
 
-.logo{
+.logo img{
 width:52px;
 height:52px;
 border-radius:12px;
 background:white;
-display:flex;
-justify-content:center;
-align-items:center;
-font-weight:bold;
-font-size:22px;
-color:#ff9900;
 border:3px solid #ff9900;
+object-fit:cover;
 }
 
 .brand h1{
@@ -204,16 +199,6 @@ max-height:500px;
 overflow:auto;
 }
 
-.cart-popup h2{
-margin-bottom:15px;
-}
-
-.cart-item{
-margin-bottom:10px;
-border-bottom:1px solid #ddd;
-padding-bottom:10px;
-}
-
 .checkout-btn{
 width:100%;
 padding:12px;
@@ -226,52 +211,70 @@ cursor:pointer;
 margin-top:10px;
 }
 
-/* MOBILE */
+/* MPESA */
+
+.mpesa-btn{
+position:fixed;
+bottom:80px;
+right:15px;
+background:green;
+color:white;
+padding:12px 15px;
+border-radius:30px;
+cursor:pointer;
+z-index:1000;
+}
+
+.mpesa-box{
+position:fixed;
+bottom:140px;
+right:15px;
+background:white;
+padding:15px;
+border-radius:12px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+display:none;
+z-index:1002;
+}
+
+/* ADMIN */
+
+.admin-box{
+position:fixed;
+top:120px;
+left:50%;
+transform:translateX(-50%);
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+display:none;
+z-index:1003;
+width:300px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:5px 0;
+}
+
+.admin-open-btn{
+position:fixed;
+top:15px;
+right:20px;
+z-index:1004;
+background:#00bcd4;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:20px;
+cursor:pointer;
+}
 
 @media(max-width:768px){
-
-.brand h1{
-font-size:20px;
-}
-
-.brand p{
-font-size:11px;
-}
-
-.logo{
-width:45px;
-height:45px;
-font-size:18px;
-}
-
-.top-btn{
-padding:10px 14px;
-font-size:13px;
-}
-
-.card h3{
-font-size:17px;
-min-height:55px;
-}
-
-.price{
-font-size:24px;
-}
-
-.products{
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:12px;
-}
-
-.card{
-padding:10px;
-}
-
-.card img{
-height:140px;
-}
-
+.card h3{font-size:17px;}
+.price{font-size:24px;}
 }
 
 </style>
@@ -283,11 +286,13 @@ height:140px;
 
 <div class="logo-box">
 
-<div class="logo">NT</div>
+<div class="logo">
+<img src="logo.png" alt="logo">
+</div>
 
 <div class="brand">
 <h1>NAHATECH LTD</h1>
-<p>Premium Laptops Kenya</p>
+<p>Tech That Moves You Forward</p>
 </div>
 
 </div>
@@ -298,16 +303,42 @@ height:140px;
 🛒 Cart (<span id="cartCount">0</span>)
 </button>
 
-<button class="top-btn admin-btn">
-🔐 Admin
-</button>
-
 </div>
 
 </header>
 
-<!-- CART -->
+<!-- ADMIN BUTTON -->
+<button class="admin-open-btn" onclick="openAdmin()">🔐 Admin</button>
 
+<!-- MPESA -->
+<div class="mpesa-btn" onclick="toggleMpesa()">💰 M-Pesa Pay</div>
+
+<div class="mpesa-box" id="mpesaBox">
+<h3>Lipa na M-Pesa</h3>
+<p><b>Pochi la Biashara</b></p>
+<p>Phone: 0142428852</p>
+<button onclick="toggleMpesa()">Close</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-box" id="adminBox">
+<h3>Admin Login</h3>
+<input type="password" id="adminPass" placeholder="Enter Password">
+<button onclick="loginAdmin()">Login</button>
+
+<div id="adminPanel" style="display:none;">
+<h4>Add Product</h4>
+<input id="pname" placeholder="Product Name">
+<input id="pprice" placeholder="Price">
+<input id="pstock" placeholder="Stock">
+<input id="pimg" placeholder="Image file name">
+<button onclick="addProduct()">Add Product</button>
+</div>
+
+<button onclick="closeAdmin()">Close</button>
+</div>
+
+<!-- CART -->
 <div class="cart-popup" id="cartPopup">
 
 <h2>Shopping Cart</h2>
@@ -323,11 +354,9 @@ Checkout via WhatsApp
 </div>
 
 <!-- PRODUCTS -->
-
 <div class="products" id="productsContainer"></div>
 
 <!-- WHATSAPP -->
-
 <a class="whatsapp"
 href="https://wa.me/254786467783"
 target="_blank">
@@ -336,231 +365,153 @@ target="_blank">
 
 <script>
 
-const products = [
+let cart = [];
 
+/* UPDATED PRODUCTS (includes Caston C15) */
+let products = [
 {
 name:"HP Elitebook 840 G3",
 price:25800,
 stock:3,
 image:"images/hp-elitebook-840-g3.jpg"
 },
-
 {
-name:"HP Elitebook 840 G5",
-price:29000,
-stock:6,
-image:"images/hp-elitebook-840-g5.jpg"
-},
-
-{
-name:"HP 840 G2 (HDD)",
-price:21500,
-stock:2,
-image:"images/hp-840-g2-hdd.jpg"
-},
-
-{
-name:"Lenovo Thinkpad X250 Intel Core I5",
-price:20999,
-stock:1,
-image:"images/lenovo-thinkpad-x250.jpg"
-},
-
-{
-name:"HP Elitebook 830 G5 Touchscreen",
-price:37000,
-stock:1,
-image:"images/hp-elitebook-830-g5-touch.jpg"
-},
-
-{
-name:"Dell Latitude 7280",
-price:22000,
-stock:1,
-image:"images/dell-latitude-7280.jpg"
-},
-
-{
-name:"MacBook Pro 13",
-price:34000,
-stock:1,
-image:"images/macbook-pro-13.jpg"
-},
-
-{
-name:"Oraimo Earphone Deeper Bass",
-price:150,
-stock:54,
-image:"images/oraimo-deeper-bass.jpg"
-},
-
-{
-name:"HF F100 Bluetooth Speaker",
-price:850,
+name:"Caston C15 Bluetooth Speaker",
+price:1250,
 stock:15,
-image:"images/hf-f100-bluetooth-speaker.jpg"
-},
-
-{
-name:"Itel Budsneo 3",
-price:1450,
-stock:5,
-image:"images/itel-budsneo-3.jpg"
-},
-
-{
-name:"Samsung 25W Super Fast Charger",
-price:520,
-stock:13,
-image:"images/samsung-25w-fast-charger.jpg"
-},
-
-{
-name:"Amaya APB-F229 Power Bank 20000mAh",
-price:2500,
-stock:15,
-image:"images/amaya-apb-f229-powerbank.jpg"
+image:"Caston C15 Bluetooth Speaker.jpg"
 }
-
 ];
 
+/* RENDER PRODUCTS */
+function renderProducts(){
+
 const container = document.getElementById("productsContainer");
+container.innerHTML = "";
 
 products.forEach((product)=>{
 
 container.innerHTML += `
-
 <div class="card">
 
-<img 
-src="${product.image}" 
-alt="${product.name}"
-loading="lazy"
-onerror="this.src='https://via.placeholder.com/300x200?text=NAHATECH+PRODUCT'"
->
+<img src="${product.image}" onerror="this.src='https://via.placeholder.com/300'">
 
 <h3>${product.name}</h3>
 
-<div class="stock">
-📦 In Stock: ${product.stock}
-</div>
+<div class="stock">📦 In Stock: ${product.stock}</div>
 
-<div class="price">
-KSh ${product.price.toLocaleString()}
-</div>
+<div class="price">KSh ${product.price}</div>
 
 <div class="buttons">
 
-<button class="buy-btn"
-onclick="buyNow('${product.name}',${product.price})">
-🛒 Buy Now
+<button class="buy-btn" onclick="buyNow('${product.name}',${product.price})">
+Buy Now
 </button>
 
-<button class="cart-btn"
-onclick="addToCart('${product.name}',${product.price})">
-➕ Add to Cart
+<button class="cart-btn" onclick="addToCart('${product.name}',${product.price})">
+Add to Cart
 </button>
 
 </div>
 
 </div>
-
 `;
 
 });
 
-let cart = [];
+}
 
+renderProducts();
+
+/* CART */
 function addToCart(name,price){
-
 cart.push({name,price});
-
+document.getElementById("cartCount").innerText = cart.length;
 updateCart();
-
-alert(name + " added to cart");
-
 }
 
 function updateCart(){
 
-document.getElementById("cartCount").innerText = cart.length;
-
-const cartItems = document.getElementById("cartItems");
-
-cartItems.innerHTML = "";
-
+let box = document.getElementById("cartItems");
+box.innerHTML = "";
 let total = 0;
 
 cart.forEach(item=>{
-
 total += item.price;
-
-cartItems.innerHTML += `
-
-<div class="cart-item">
-${item.name}<br>
-<strong>KSh ${item.price.toLocaleString()}</strong>
-</div>
-
-`;
-
+box.innerHTML += `<div>${item.name} - KSh ${item.price}</div>`;
 });
 
-document.getElementById("totalPrice").innerText =
-total.toLocaleString();
+document.getElementById("totalPrice").innerText = total;
 
 }
 
+/* CART TOGGLE */
 function toggleCart(){
-
-const popup = document.getElementById("cartPopup");
-
-popup.style.display =
-popup.style.display === "block" ? "none" : "block";
-
+let c = document.getElementById("cartPopup");
+c.style.display = c.style.display === "block" ? "none" : "block";
 }
 
+/* WHATSAPP */
 function buyNow(name,price){
-
-const message =
-`Hello NAHATECH, I want to buy:%0A%0A${name}%0APrice: KSh ${price}`;
-
-window.open(
-`https://wa.me/254786467783?text=${message}`,
-"_blank"
-);
-
+window.open(`https://wa.me/254786467783?text=I want ${name} - KSh ${price}`);
 }
 
 function checkoutWhatsApp(){
-
-if(cart.length === 0){
-
-alert("Your cart is empty");
-return;
-
-}
-
-let message =
-"Hello NAHATECH, I want to order:%0A%0A";
-
+let msg = "Order:%0A";
 let total = 0;
 
-cart.forEach(item=>{
-
-message += `${item.name} - KSh ${item.price}%0A`;
-
-total += item.price;
-
+cart.forEach(i=>{
+msg += `${i.name} - ${i.price}%0A`;
+total += i.price;
 });
 
-message += `%0ATotal: KSh ${total}`;
+msg += "Total: "+total;
 
-window.open(
-`https://wa.me/254786467783?text=${message}`,
-"_blank"
-);
+window.open(`https://wa.me/254786467783?text=${msg}`);
+}
 
+/* MPESA */
+function toggleMpesa(){
+let m = document.getElementById("mpesaBox");
+m.style.display = m.style.display === "block" ? "none" : "block";
+}
+
+/* ADMIN */
+function openAdmin(){
+document.getElementById("adminBox").style.display="block";
+}
+
+function closeAdmin(){
+document.getElementById("adminBox").style.display="none";
+}
+
+function loginAdmin(){
+let pass = document.getElementById("adminPass").value;
+
+if(pass === "TREASURE"){
+document.getElementById("adminPanel").style.display="block";
+alert("Access Granted");
+}else{
+alert("Wrong Password");
+}
+}
+
+function addProduct(){
+
+let name = document.getElementById("pname").value;
+let price = document.getElementById("pprice").value;
+let stock = document.getElementById("pstock").value;
+let img = document.getElementById("pimg").value;
+
+products.push({
+name,
+price:Number(price),
+stock,
+image:img
+});
+
+renderProducts();
+alert("Product Added");
 }
 
 </script>

@@ -1,441 +1,151 @@
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.13.0/firebase-storage-compat.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAHATECH LTD</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+}
+
+header{
+background:#0a0a23;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.price{
+color:green;
+font-size:22px;
+font-weight:bold;
+}
+
+.stock{
+color:#555;
+margin:10px 0;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:5px;
+background:green;
+color:white;
+cursor:pointer;
+}
+
+footer{
+background:#0a0a23;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>NAHATECH LTD</h1>
+<p>Affordable Laptops Kenya</p>
+</header>
+
+<div class="container" id="products"></div>
+
+<footer>
+📍 Kisii Kenya | 📞 +254786467783
+</footer>
 
 <script>
 
-firebase.initializeApp({
-apiKey: "AIzaSyC4zvGgSIlN6pk2EaphsqaVavJJz9BkjkU",
-authDomain: "nahatech-d3b4d.firebaseapp.com",
-projectId: "nahatech-d3b4d",
-storageBucket: "nahatech-d3b4d.appspot.com",
-messagingSenderId: "436862933673",
-appId: "1:436862933673:web:59f57109c3ff2ce32227b8"
-});
+const products = [
 
-const db = firebase.firestore();
-const storage = firebase.storage();
+{
+name:"HP EliteBook 840 G3",
+price:28500,
+quantity:12,
+image:"https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600"
+},
 
-let cart = [];
-let selectedProductForPayment = "";
+{
+name:"Dell Latitude 7490",
+price:32500,
+quantity:8,
+image:"https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+},
 
-/* LOAD PRODUCTS */
-async function loadShop(){
+{
+name:"Lenovo ThinkPad T460",
+price:24500,
+quantity:15,
+image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=600"
+},
 
-const container=document.getElementById("shopProducts");
-
-container.innerHTML=`
-<div style="grid-column:1/-1;text-align:center;padding:40px;">
-Loading products...
-</div>
-`;
-
-try{
-
-const snapshot=await db.collection("products").get();
-
-if(snapshot.empty){
-
-container.innerHTML=`
-<div style="grid-column:1/-1;text-align:center;padding:40px;">
-<h2>No products found</h2>
-</div>
-`;
-
-return;
+{
+name:"MacBook Air 2017",
+price:45000,
+quantity:5,
+image:"https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600"
 }
+
+];
+
+function loadProducts(){
+
+let box=document.getElementById("products");
 
 let html="";
 
-snapshot.forEach(doc=>{
+products.forEach(p=>{
 
-const p=doc.data();
-
-html+=`
-
+html += `
 <div class="card">
 
-<img 
-src="${p.image || 'https://placehold.co/400x300?text=NAHATECH'}"
-alt="${p.name}"
-onerror="this.src='https://placehold.co/400x300?text=NAHATECH'"
->
+<img src="${p.image}">
 
-<h3>${p.name || 'No Name'}</h3>
-
-<div class="stock">
-📦 In Stock: ${p.quantity || 0}
-</div>
+<h2>${p.name}</h2>
 
 <div class="price">
-KSh ${Number(p.price || 0).toLocaleString()}
+KSh ${p.price}
 </div>
 
-<button 
-class="buy"
-onclick="showPayment('${p.name} - KSh ${p.price}')"
->
-💳 Buy Now
-</button>
+<div class="stock">
+Stock: ${p.quantity}
+</div>
 
-<button 
-class="cart"
-onclick="addToCart('${p.name}',${p.price})"
->
-🛒 Add to Cart
+<button onclick="buyNow('${p.name}')">
+Buy Now
 </button>
 
 </div>
-
-`;
-
-});
-
-container.innerHTML=html;
-
-}catch(error){
-
-console.log(error);
-
-container.innerHTML=`
-<div style="grid-column:1/-1;text-align:center;padding:40px;color:red;">
-Failed to load products
-</div>
-`;
-
-}
-
-}
-
-/* CART */
-
-function addToCart(name,price){
-
-cart.push({
-name:name,
-price:Number(price)
-});
-
-updateCartDisplay();
-
-document.getElementById("cartModal").style.display="block";
-
-}
-
-function updateCartDisplay(){
-
-document.getElementById("cartCountBadge").innerText=cart.length;
-
-let cartBox=document.getElementById("cartModel");
-
-let total=0;
-
-let html="";
-
-cart.forEach((item,index)=>{
-
-total+=item.price;
-
-html+=`
-
-<div style="padding:10px;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;">
-
-<div>
-<b>${item.name}</b><br>
-KSh ${item.price.toLocaleString()}
-</div>
-
-<button 
-class="delete"
-onclick="removeCart(${index})"
->
-Remove
-</button>
-
-</div>
-
-`;
-
-});
-
-cartBox.innerHTML=html;
-
-document.getElementById("cartPrice").innerHTML=`
-💰 Total: KSh ${total.toLocaleString()}
-`;
-
-}
-
-function removeCart(index){
-
-cart.splice(index,1);
-
-updateCartDisplay();
-
-}
-
-function openCart(){
-
-updateCartDisplay();
-
-document.getElementById("cartModal").style.display="block";
-
-}
-
-function closeCart(){
-
-document.getElementById("cartModal").style.display="none";
-
-}
-
-/* PAYMENT */
-
-function showPayment(product){
-
-selectedProductForPayment=product;
-
-document.getElementById("paymentProduct").innerHTML=`
-<b>${product}</b>
-`;
-
-document.getElementById("paymentModal").style.display="block";
-
-}
-
-function closePayment(){
-
-document.getElementById("paymentModal").style.display="none";
-
-}
-
-function confirmPayment(){
-
-const customerName=document.getElementById("mpesaName").value;
-
-const customerPhone=document.getElementById("mpesaPhone").value;
-
-if(!customerName || !customerPhone){
-
-alert("Fill all details");
-
-return;
-
-}
-
-let msg=
-`*NAHATECH ORDER*%0A%0A`+
-`Customer: ${customerName}%0A`+
-`Phone: ${customerPhone}%0A`+
-`Order: ${selectedProductForPayment}%0A%0A`+
-`Payment completed successfully`;
-
-window.open(
-`https://wa.me/254786467783?text=${msg}`,
-"_blank"
-);
-
-closePayment();
-
-}
-
-/* CHECKOUT */
-
-function checkoutPayment(){
-
-if(cart.length===0){
-
-alert("Cart is empty");
-
-return;
-
-}
-
-let total=0;
-
-let order="";
-
-cart.forEach(item=>{
-
-total+=item.price;
-
-order+=`${item.name} - KSh ${item.price}%0A`;
-
-});
-
-selectedProductForPayment=
-`${order}%0ATotal: KSh ${total}`;
-
-document.getElementById("paymentProduct").innerHTML=`
-<b>Cart Total: KSh ${total.toLocaleString()}</b>
-`;
-
-document.getElementById("paymentModal").style.display="block";
-
-}
-
-/* ADMIN */
-
-function openAdmin(){
-
-document.getElementById("adminLoginModal").style.display="block";
-
-}
-
-function closeAdminLogin(){
-
-document.getElementById("adminLoginModal").style.display="none";
-
-}
-
-function loginAdmin(){
-
-let password=document.getElementById("adminPassword").value;
-
-if(password==="1234"){
-
-closeAdminLogin();
-
-document.getElementById("adminPanelModal").style.display="block";
-
-loadAdminProducts();
-
-}else{
-
-alert("Wrong password");
-
-}
-
-}
-
-function closeAdminPanel(){
-
-document.getElementById("adminPanelModal").style.display="none";
-
-}
-
-/* IMAGE PREVIEW */
-
-document.getElementById("productImage")
-.addEventListener("change",function(e){
-
-let file=e.target.files[0];
-
-if(!file)return;
-
-let reader=new FileReader();
-
-reader.onload=function(event){
-
-document.getElementById("previewImage").src=event.target.result;
-
-document.getElementById("previewImage").style.display="block";
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-/* ADD PRODUCT */
-
-async function addProduct(){
-
-try{
-
-let name=document.getElementById("productName").value.trim();
-
-let price=document.getElementById("productPrice").value;
-
-let quantity=document.getElementById("productQuantity").value;
-
-let file=document.getElementById("productImage").files[0];
-
-if(!name || !price || !quantity || !file){
-
-alert("Please fill all fields");
-
-return;
-
-}
-
-const storageRef=storage.ref(
-"products/"+Date.now()+"_"+file.name
-);
-
-await storageRef.put(file);
-
-const imageUrl=await storageRef.getDownloadURL();
-
-await db.collection("products").add({
-
-name:name,
-price:Number(price),
-quantity:Number(quantity),
-image:imageUrl
-
-});
-
-alert("✅ Product uploaded successfully");
-
-document.getElementById("productName").value="";
-document.getElementById("productPrice").value="";
-document.getElementById("productQuantity").value="";
-document.getElementById("productImage").value="";
-
-document.getElementById("previewImage").style.display="none";
-
-loadShop();
-
-loadAdminProducts();
-
-}catch(error){
-
-console.log(error);
-
-alert(error.message);
-
-}
-
-}
-
-/* ADMIN PRODUCTS */
-
-async function loadAdminProducts(){
-
-let box=document.getElementById("adminProducts");
-
-box.innerHTML="Loading...";
-
-const snapshot=await db.collection("products").get();
-
-let html="";
-
-snapshot.forEach(doc=>{
-
-let p=doc.data();
-
-html+=`
-
-<div class="admin-product">
-
-<img 
-src="${p.image}" 
-onerror="this.src='https://placehold.co/70x70?text=IMG'"
->
-
-<div style="flex:1;">
-
-<b>${p.name}</b><br>
-
-💰 KSh ${Number(p.price).toLocaleString()}<br>
-
-📦 Stock: ${p.quantity}
-
-</div>
-
-</div>
-
 `;
 
 });
@@ -444,20 +154,18 @@ box.innerHTML=html;
 
 }
 
-/* CLOSE MODALS */
+function buyNow(name){
 
-window.onclick=function(event){
-
-if(event.target.classList.contains("modal")){
-
-event.target.style.display="none";
+window.open(
+`https://wa.me/254786467783?text=Hello%20NAHATECH,%20I%20want%20to%20buy%20${name}`,
+"_blank"
+);
 
 }
 
-};
-
-/* START */
-
-loadShop();
+loadProducts();
 
 </script>
+
+</body>
+</html>

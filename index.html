@@ -1,768 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>NAHATECH LTD -Tech That Moves You Forward</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#f3f3f3;
-padding-top:90px;
-}
-
-/* HEADER */
-
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-background:#02022c;
-padding:12px 15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-z-index:1000;
-box-shadow:0 2px 10px rgba(0,0,0,0.2);
-}
-
-.logo-box{
-display:flex;
-align-items:center;
-gap:10px;
-}
-
-.logo img{
-width:52px;
-height:52px;
-border-radius:12px;
-background:white;
-border:3px solid #ff9900;
-object-fit:cover;
-}
-
-.brand h1{
-font-size:28px;
-color:#fff;
-}
-
-.brand p{
-font-size:14px;
-color:#ffc107;
-}
-
-.top-buttons{
-display:flex;
-gap:10px;
-}
-
-.top-btn{
-background:linear-gradient(45deg,#ff9800,#ff6f00);
-border:none;
-padding:12px 18px;
-border-radius:30px;
-color:white;
-font-weight:bold;
-cursor:pointer;
-box-shadow:0 3px 8px rgba(0,0,0,0.2);
-}
-
-.admin-btn{
-background:linear-gradient(45deg,#00bcd4,#009688);
-}
-
-/* PRODUCTS */
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:18px;
-padding:18px;
-}
-
-.card{
-background:white;
-border-radius:20px;
-padding:15px;
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-}
-
-.card img{
-width:100%;
-height:180px;
-object-fit:cover;
-background:#fafafa;
-border-radius:10px;
-display:block;
-}
-
-.card h3{
-font-size:22px;
-margin-top:12px;
-color:#222;
-min-height:65px;
-}
-
-.stock{
-font-size:15px;
-color:#777;
-margin:8px 0;
-}
-
-.price{
-font-size:34px;
-font-weight:bold;
-color:#2e7d32;
-margin-bottom:12px;
-}
-
-.buttons{
-display:flex;
-justify-content:space-between;
-gap:10px;
-}
-
-.buy-btn,
-.cart-btn{
-flex:1;
-border:none;
-padding:12px;
-border-radius:25px;
-font-weight:bold;
-cursor:pointer;
-color:white;
-font-size:15px;
-transition:0.3s;
-}
-
-.buy-btn{
-background:#2e7d32;
-}
-
-.buy-btn:hover{
-background:#1b5e20;
-}
-
-.cart-btn{
-background:#ff9800;
-}
-
-.cart-btn:hover{
-background:#ef6c00;
-}
-
-/* WHATSAPP */
-
-.whatsapp{
-position:fixed;
-right:15px;
-bottom:20px;
-background:#25D366;
-color:white;
-padding:14px 18px;
-border-radius:40px;
-text-decoration:none;
-font-weight:bold;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
-z-index:1000;
-}
-
-/* CART POPUP */
-
-.cart-popup{
-position:fixed;
-top:100px;
-right:20px;
-width:320px;
-background:white;
-border-radius:20px;
-padding:20px;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
-display:none;
-z-index:1001;
-max-height:500px;
-overflow:auto;
-}
-
-.checkout-btn{
-width:100%;
-padding:12px;
-border:none;
-background:#2e7d32;
-color:white;
-border-radius:12px;
-font-weight:bold;
-cursor:pointer;
-margin-top:10px;
-}
-
-/* MPESA */
-
-.mpesa-btn{
-position:fixed;
-bottom:80px;
-right:15px;
-background:green;
-color:white;
-padding:12px 15px;
-border-radius:30px;
-cursor:pointer;
-z-index:1000;
-}
-
-.mpesa-box{
-position:fixed;
-bottom:140px;
-right:15px;
-background:white;
-padding:15px;
-border-radius:12px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
-display:none;
-z-index:1002;
-}
-
-/* ADMIN */
-
-.admin-box{
-position:fixed;
-top:120px;
-left:50%;
-transform:translateX(-50%);
-background:white;
-padding:20px;
-border-radius:15px;
-box-shadow:0 0 15px rgba(0,0,0,0.3);
-display:none;
-z-index:1003;
-width:300px;
-}
-
-input{
-width:100%;
-padding:10px;
-margin:5px 0;
-}
-
-.admin-open-btn{
-position:fixed;
-top:15px;
-right:20px;
-z-index:1004;
-background:#00bcd4;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:20px;
-cursor:pointer;
-}
-
-@media(max-width:768px){
-.card h3{font-size:17px;}
-.price{font-size:24px;}
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-
-<div class="logo-box">
-
-<div class="logo">
-<img src="logo.png" alt="logo">
-</div>
-
-<div class="brand">
-<h1>NAHATECH LTD</h1>
-<p>Tech That Moves You Forward</p>
-</div>
-
-</div>
-
-<div class="top-buttons">
-
-<button class="top-btn" onclick="toggleCart()">
-🛒 Cart (<span id="cartCount">0</span>)
-</button>
-
-</div>
-
-</header>
-
-<!-- ADMIN BUTTON -->
-<button class="admin-open-btn" onclick="openAdmin()">🔐 Admin</button>
-
-<!-- MPESA -->
-<div class="mpesa-btn" onclick="toggleMpesa()">💰 M-Pesa Pay</div>
-
-<div class="mpesa-box" id="mpesaBox">
-<h3>Lipa na M-Pesa</h3>
-<p><b>Pochi la Biashara</b></p>
-<p>Phone: 0142428852</p>
-<button onclick="toggleMpesa()">Close</button>
-</div>
-
-<!-- ADMIN PANEL -->
-<div class="admin-box" id="adminBox">
-<h3>Admin Login</h3>
-<input type="password" id="adminPass" placeholder="Enter Password">
-<button onclick="loginAdmin()">Login</button>
-
-<div id="adminPanel" style="display:none;">
-<h4>Add Product</h4>
-<input id="pname" placeholder="Product Name">
-<input id="pprice" placeholder="Price">
-<input id="pstock" placeholder="Stock">
-<input id="pimg" placeholder="Image file name">
-<button onclick="addProduct()">Add Product</button>
-</div>
-
-<button onclick="closeAdmin()">Close</button>
-</div>
-
-<!-- CART -->
-<div class="cart-popup" id="cartPopup">
-
-<h2>Shopping Cart</h2>
-
-<div id="cartItems"></div>
-
-<h3>Total: KSh <span id="totalPrice">0</span></h3>
-
-<button class="checkout-btn" onclick="checkoutWhatsApp()">
-Checkout via WhatsApp
-</button>
-
-</div>
-
-<!-- PRODUCTS -->
-<div class="products" id="productsContainer"></div>
-
-<!-- WHATSAPP -->
-<a class="whatsapp"
-href="https://wa.me/254786467783"
-target="_blank">
-💬 WhatsApp Order
-</a>
-
-<script>
-
-let cart = [];
-
-/* UPDATED PRODUCTS (includes Caston C15) */
-let products = [
-{
-name:"HP Elitebook 840 G3",
-price:25800,
-stock:3,
-image:"images/hp-elitebook-840-g3.jpg"
-},
-{
-name:"Caston C15 Bluetooth Speaker",
-price:1250,
-stock:15,
-image:"images/Caston C15 Bluetooth Speaker.jpg"
-},
-{
-name:"HP Elitebook 840 G3",
-price:35800,
-stock:13,
-image:"images/hp-elitebook-840-g3b.jpg"
-},
-
-{
-name:"HP Elitebook 840 G5",
-price:29000,
-stock:6,
-image:"images/hp-elitebook-840-g5.jpg"
-},
-
-{
-name:"HP 840 G2 (HDD)",
-price:21500,
-stock:2,
-image:"images/hp-840-g2-hdd.jpg"
-},
-
-{
-name:"Lenovo Thinkpad X250 Intel Core I5",
-price:20999,
-stock:1,
-image:"images/lenovo-thinkpad-x250.jpg"
-},
-
-{
-name:"HP Elitebook 830 G5 Touchscreen",
-price:37000,
-stock:1,
-image:"images/hp-elitebook-830-g5-touch.jpg"
-},
-
-{
-name:"Dell Latitude 7280",
-price:22000,
-stock:1,
-image:"images/dell-latitude-7280.jpg"
-},
-
-{
-name:"MacBook Pro 13",
-price:34000,
-stock:1,
-image:"images/macbook-pro-13.jpg"
-},
-
-{
-name:"Oraimo Earphone Deeper Bass",
-price:150,
-stock:54,
-image:"images/oraimo-deeper-bass.jpg"
-},
-
-{
-name:"HF F100 Bluetooth Speaker",
-price:850,
-stock:15,
-image:"images/hf-f100-bluetooth-speaker.jpg"
-},
-
-{
-name:"Itel Budsneo 3",
-price:1450,
-stock:5,
-image:"images/itel-budsneo-3.jpg"
-},
-
-{
-name:"Samsung 25W Super Fast Charger",
-price:520,
-stock:13,
-image:"images/samsung-25w-fast-charger.jpg"
-},
-
-{
-name:"Amaya APB-F229 Power Bank 20000mAh",
-price:2500,
-stock:15,
-image:"images/amaya-apb-f229-powerbank.jpg"
-}
-
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <title>NAHATECH LTD -Tech That Moves You Forward</title> <style> *{ margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; } body{ background:#f3f3f3; padding-top:90px; } /* HEADER */ header{ position:fixed; top:0; left:0; width:100%; background:#02022c; padding:12px 15px; display:flex; justify-content:space-between; align-items:center; z-index:1000; box-shadow:0 2px 10px rgba(0,0,0,0.2); } .logo-box{ display:flex; align-items:center; gap:10px; } .logo img{ width:52px; height:52px; border-radius:12px; background:white; border:3px solid #ff9900; object-fit:cover; } .brand h1{ font-size:28px; color:#fff; } .brand p{ font-size:14px; color:#ffc107; } .top-buttons{ display:flex; gap:10px; } .top-btn{ background:linear-gradient(45deg,#ff9800,#ff6f00); border:none; padding:12px 18px; border-radius:30px; color:white; font-weight:bold; cursor:pointer; } /* PRODUCTS */ .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; padding:18px; } .card{ background:white; border-radius:20px; padding:15px; box-shadow:0 5px 15px rgba(0,0,0,0.08); } .card img{ width:100%; height:180px; object-fit:cover; border-radius:10px; } .card h3{ font-size:20px; margin-top:10px; } .price{ font-size:22px; font-weight:bold; color:green; } .buttons{ display:flex; gap:10px; margin-top:10px; } .buy-btn, .cart-btn{ flex:1; padding:10px; border:none; border-radius:20px; color:white; cursor:pointer; } .buy-btn{background:green;} .cart-btn{background:orange;} /* CART */ .cart-popup{ position:fixed; top:100px; right:20px; width:300px; background:white; padding:15px; border-radius:15px; display:none; z-index:1000; } /* WHATSAPP */ .whatsapp{ position:fixed; bottom:20px; right:15px; background:#25D366; padding:12px; border-radius:30px; color:white; text-decoration:none; } /* MPESA BUTTON */ .mpesa-btn{ position:fixed; bottom:80px; right:15px; background:green; color:white; padding:12px; border-radius:30px; cursor:pointer; } /* MODAL */ .modal{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; } .modal-content{ background:white; width:90%; max-width:400px; margin:10% auto; padding:20px; border-radius:12px; text-align:center; } input{ width:100%; padding:10px; margin:8px 0; } .close{ float:right; font-size:25px; cursor:pointer; } </style> </head> <body> <header> <div class="logo-box"> <div class="logo"> <img src="logo.png"> </div> <div class="brand"> <h1>NAHATECH LTD</h1> <p>Tech That Moves You Forward</p> </div> </div> <div class="top-buttons"> <button class="top-btn" onclick="toggleCart()">🛒 Cart (<span id="cartCount">0</span>)</button> </div> </header> <!-- PRODUCTS --> <div class="products" id="productsContainer"></div> <!-- CART --> <div class="cart-popup" id="cartPopup"> <h3>Cart</h3> <div id="cartItems"></div> <h4>Total: KSh <span id="totalPrice">0</span></h4> <button onclick="checkoutWhatsApp()">Checkout WhatsApp</button> </div> <!-- MPESA BUTTON --> <div class="mpesa-btn" onclick="openMpesa()">💰 M-Pesa Pay</div> <!-- WHATSAPP --> <a class="whatsapp" href="https://wa.me/254786467783" target="_blank">WhatsApp</a> <!-- MPESA MODAL --> <div class="modal" id="mpesaModal"> <div class="modal-content"> <span class="close" onclick="closeMpesa()">&times;</span> <h2>Lipa na M-Pesa</h2> <p><b>Pochi la Biashara</b></p> <h3>0142428852</h3> <input type="text" id="name" placeholder="Full Name"> <input type="text" id="phone" placeholder="Phone Number"> <input type="number" id="amount" placeholder="Amount"> <button onclick="sendWhatsApp()">Confirm Order</button> </div> </div> <script> let cart = []; let products = [ {name:"HP Elitebook 840 G3", price:25800, stock:3, image:"images/hp.jpg"}, {name:"Caston C15 Speaker", price:1250, stock:10, image:"images/speaker.jpg"}, 
+{  
+name:"HP Elitebook 840 G3",  
+price:25800,  
+stock:3,  
+image:"images/hp-elitebook-840-g3.jpg"  
+},  
+  
+{  
+name:"HP Elitebook 840 G5",  
+price:29000,  
+stock:6,  
+image:"images/hp-elitebook-840-g5.jpg"  
+},  
+  
+{  
+name:"HP 840 G2 (HDD)",  
+price:21500,  
+stock:2,  
+image:"images/hp-840-g2-hdd.jpg"  
+},  
+  
+{  
+name:"Lenovo Thinkpad X250 Intel Core I5",  
+price:20999,  
+stock:1,  
+image:"images/lenovo-thinkpad-x250.jpg"  
+},  
+  
+{  
+name:"HP Elitebook 830 G5 Touchscreen",  
+price:37000,  
+stock:1,  
+image:"images/hp-elitebook-830-g5-touch.jpg"  
+},  
+  
+{  
+name:"Dell Latitude 7280",  
+price:22000,  
+stock:1,  
+image:"images/dell-latitude-7280.jpg"  
+},  
+  
+{  
+name:"MacBook Pro 13",  
+price:34000,  
+stock:1,  
+image:"images/macbook-pro-13.jpg"  
+},  
+  
+{  
+name:"Oraimo Earphone Deeper Bass",  
+price:150,  
+stock:54,  
+image:"images/oraimo-deeper-bass.jpg"  
+},  
+  
+{  
+name:"HF F100 Bluetooth Speaker",  
+price:850,  
+stock:15,  
+image:"images/hf-f100-bluetooth-speaker.jpg"  
+},  
+  
+{  
+name:"Itel Budsneo 3",  
+price:1450,  
+stock:5,  
+image:"images/itel-budsneo-3.jpg"  
+},  
+  
+{  
+name:"Samsung 25W Super Fast Charger",  
+price:520,  
+stock:13,  
+image:"images/samsung-25w-fast-charger.jpg"  
+},  
+  
+{  
+name:"Amaya APB-F229 Power Bank 20000mAh",  
+price:2500,  
+stock:15,  
+image:"images/amaya-apb-f229-powerbank.jpg"  
+},  
 {
 name:"Amaya APB-P119 Power Bank 10000mAh",
 price:1500,
 stock:13,
 image:"images/amaya-apb-P119-powerbank.jpg"
-}
-];
-
-/* RENDER PRODUCTS */
-function renderProducts(){
-
-const container = document.getElementById("productsContainer");
-container.innerHTML = "";
-
-products.forEach((product)=>{
-
-container.innerHTML += `
-<div class="card">
-
-<img src="${product.image}" onerror="this.src='https://via.placeholder.com/300'">
-
-<h3>${product.name}</h3>
-
-<div class="stock">📦 In Stock: ${product.stock}</div>
-
-<div class="price">KSh ${product.price}</div>
-
-<div class="buttons">
-
-<button class="buy-btn" onclick="buyNow('${product.name}',${product.price})">
-Buy Now
-</button>
-
-<button class="cart-btn" onclick="addToCart('${product.name}',${product.price})">
-Add to Cart
-</button>
-
-</div>
-
-</div>
-`;
-
-});
-
-}
-
-renderProducts();
-
-/* CART */
-function addToCart(name,price){
-cart.push({name,price});
-document.getElementById("cartCount").innerText = cart.length;
-updateCart();
-}
-
-function updateCart(){
-
-let box = document.getElementById("cartItems");
-box.innerHTML = "";
-let total = 0;
-
-cart.forEach(item=>{
-total += item.price;
-box.innerHTML += `<div>${item.name} - KSh ${item.price}</div>`;
-});
-
-document.getElementById("totalPrice").innerText = total;
-
-}
-
-/* CART TOGGLE */
-function toggleCart(){
-let c = document.getElementById("cartPopup");
-c.style.display = c.style.display === "block" ? "none" : "block";
-}
-
-/* WHATSAPP */
-let selectedProduct = "";
-let selectedPrice = 0;
-
-function openPaymentPopup(product, price){
-
-selectedProduct = product;
-selectedPrice = price;
-
-document.getElementById("popupProduct").innerText = product;
-document.getElementById("popupPrice").innerText =
-"KSh " + price;
-
-document.getElementById("paymentPopup").style.display =
-"flex";
-}
-
-function closePaymentPopup(){
-document.getElementById("paymentPopup").style.display =
-"none";
-}
-
-function buyNow(name, price){
-openPaymentPopup(name, price);
-}
-function checkoutWhatsApp(){
-
-if(cart.length === 0){
-alert("Cart is empty");
-return;
-}
-
-let total = 0;
-let products = "";
-
-cart.forEach(item=>{
-products += item.name + ", ";
-total += item.price;
-});
-
-openPaymentPopup(products, total);
-}
-function confirmPayment(){
-
-let name =
-document.getElementById("customerName").value;
-
-let phone =
-document.getElementById("customerPhone").value;
-
-if(name === "" || phone === ""){
-alert("Please fill all details");
-return;
-}
-
-let msg =
-`Hello NAHATECH LTD,
-I have paid via M-PESA.
-
-Name: ${name}
-Phone: ${phone}
-
-Product(s): ${selectedProduct}
-Amount: KSh ${selectedPrice}
-
-Paid to Pochi la Biashara:
-0142428852`;
-
-window.open(
-`https://wa.me/254786467783?text=${encodeURIComponent(msg)}`
-);
-
-closePaymentPopup();
-}
-
-/* MPESA */
-function toggleMpesa(){
-let m = document.getElementById("mpesaBox");
-m.style.display = m.style.display === "block" ? "none" : "block";
-}
-
-/* ADMIN */
-function openAdmin(){
-document.getElementById("adminBox").style.display="block";
-}
-
-function closeAdmin(){
-document.getElementById("adminBox").style.display="none";
-}
-
-function loginAdmin(){
-let pass = document.getElementById("adminPass").value;
-
-if(pass === "TREASURE"){
-document.getElementById("adminPanel").style.display="block";
-alert("Access Granted");
-}else{
-alert("Wrong Password");
-}
-}
-
-function addProduct(){
-
-let name = document.getElementById("pname").value;
-let price = document.getElementById("pprice").value;
-let stock = document.getElementById("pstock").value;
-let img = document.getElementById("pimg").value;
-
-products.push({
-name,
-price:Number(price),
-stock,
-image:img
-});
-
-renderProducts();
-alert("Product Added");
-}
-
-</script>
-
-<!-- PASTE MPESA POPUP HERE -->
-
-<div id="paymentPopup" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-z-index:9999;
-justify-content:center;
-align-items:center;
-padding:15px;
-">
-
-<div style="
-background:#fff;
-width:100%;
-max-width:420px;
-border-radius:35px;
-padding:25px;
-position:relative;
-text-align:center;
-">
-
-<span onclick="closePaymentPopup()" style="
-position:absolute;
-right:20px;
-top:15px;
-font-size:35px;
-cursor:pointer;
-font-weight:bold;
-color:#666;
-">&times;</span>
-
-<h1 style="color:#2e7d32;font-size:38px;">
-📲 M-PESA Payment
-</h1>
-
-<p>Pochi la Biashara Number:</p>
-
-<div style="
-background:#02022c;
-padding:18px;
-border-radius:40px;
-font-size:40px;
-font-weight:bold;
-color:#ffb300;
-margin:15px 0;
-">
-0142428852
-</div>
-
-<div style="
-background:#f2f2f2;
-padding:18px;
-border-radius:25px;
-margin-bottom:20px;
-">
-
-<h3 id="popupProduct">Product Name</h3>
-
-<p id="popupPrice">KSh 0</p>
-
-<p>Pay to Pochi la Biashara: 0142428852</p>
-
-</div>
-
-<input
-type="text"
-id="customerName"
-placeholder="Your Name"
-style="width:100%;padding:15px;border-radius:30px;margin-bottom:10px;">
-
-<input
-type="number"
-id="customerPhone"
-placeholder="M-PESA Phone Number"
-style="width:100%;padding:15px;border-radius:30px;margin-bottom:15px;">
-
-<button onclick="confirmPayment()" style="
-width:100%;
-padding:15px;
-background:green;
-color:white;
-border:none;
-border-radius:30px;
-font-size:22px;
-font-weight:bold;
-">
-✅ I HAVE PAID
-</button>
-
-<p style="margin-top:10px;">
-After payment click button to confirm via WhatsApp
-</p>
-
-</div>
-</div>
-
-</body>
-</html>
-
+},
+]; /* PRODUCTS */ function renderProducts(){ let box = document.getElementById("productsContainer"); box.innerHTML=""; products.forEach(p=>{ box.innerHTML += ` <div class="card"> <img src="${p.image}"> <h3>${p.name}</h3> <div class="price">KSh ${p.price}</div> <div class="buttons"> <button class="buy-btn" onclick="openMpesa()">Buy Now</button> <button class="cart-btn" onclick="addCart('${p.name}',${p.price})">Add Cart</button> </div> </div>`; }); } renderProducts(); /* CART */ function addCart(name,price){ cart.push({name,price}); document.getElementById("cartCount").innerText = cart.length; updateCart(); } function updateCart(){ let box=document.getElementById("cartItems"); box.innerHTML=""; let total=0; cart.forEach(i=>{ box.innerHTML+=`<div>${i.name} - ${i.price}</div>`; total+=i.price; }); document.getElementById("totalPrice").innerText=total; } function toggleCart(){ let c=document.getElementById("cartPopup"); c.style.display=c.style.display==="block"?"none":"block"; } /* MPESA */ function openMpesa(){ document.getElementById("mpesaModal").style.display="block"; } function closeMpesa(){ document.getElementById("mpesaModal").style.display="none"; } /* WHATSAPP ORDER */ function sendWhatsApp(){ let name=document.getElementById("name").value; let phone=document.getElementById("phone").value; let amount=document.getElementById("amount").value; if(!name||!phone||!amount){ alert("Fill all fields"); return; } let msg=`NEW ORDER Name: ${name} Phone: ${phone} Amount: ${amount} Pochi: 0142428852`; window.open("https://wa.me/254786467783?text="+encodeURIComponent(msg)); } /* CART CHECKOUT */ function checkoutWhatsApp(){ let msg="ORDER\n"; let total=0; cart.forEach(i=>{ msg+=`${i.name} - ${i.price}\n`; total+=i.price; }); msg+="Total: "+total; window.open("https://wa.me/254786467783?text="+encodeURIComponent(msg)); } </script> </body> </html>

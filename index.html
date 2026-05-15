@@ -1,171 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NAHATECH LTD</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>NAHATECH LTD - Premium Laptops Kenya</title>
 
 <style>
-body{
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial,sans-serif;
-background:#f5f5f5;
 }
+
+body{
+background:#f3f3f3;
+padding-top:90px;
+}
+
+/* HEADER */
 
 header{
-background:#0a0a23;
-color:white;
-padding:15px;
-text-align:center;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:#02022c;
+padding:12px 15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:1000;
+box-shadow:0 2px 10px rgba(0,0,0,0.2);
 }
 
-.container{
+.logo-box{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo{
+width:52px;
+height:52px;
+border-radius:12px;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+font-weight:bold;
+font-size:22px;
+color:#ff9900;
+border:3px solid #ff9900;
+}
+
+.brand h1{
+font-size:28px;
+color:#fff;
+}
+
+.brand p{
+font-size:14px;
+color:#ffc107;
+}
+
+.top-buttons{
+display:flex;
+gap:10px;
+}
+
+.top-btn{
+background:linear-gradient(45deg,#ff9800,#ff6f00);
+border:none;
+padding:12px 18px;
+border-radius:30px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+}
+
+.admin-btn{
+background:linear-gradient(45deg,#00bcd4,#009688);
+}
+
+/* PRODUCTS */
+
+.products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:20px;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:18px;
+padding:18px;
 }
 
 .card{
 background:white;
+border-radius:20px;
 padding:15px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .card img{
 width:100%;
-height:200px;
-object-fit:cover;
+height:180px;
+object-fit:contain;
+background:#fafafa;
 border-radius:10px;
 }
 
-.price{
-color:green;
-font-size:22px;
-font-weight:bold;
+.card h3{
+font-size:24px;
+margin-top:12px;
+color:#222;
+min-height:70px;
 }
 
 .stock{
-color:#555;
-margin:10px 0;
+font-size:15px;
+color:#777;
+margin:8px 0;
 }
 
-button{
-padding:10px 15px;
+.price{
+font-size:38px;
+font-weight:bold;
+color:#2e7d32;
+margin-bottom:12px;
+}
+
+.buttons{
+display:flex;
+justify-content:space-between;
+gap:10px;
+}
+
+.buy-btn,
+.cart-btn{
+flex:1;
 border:none;
-border-radius:5px;
-background:green;
-color:white;
+padding:12px;
+border-radius:25px;
+font-weight:bold;
 cursor:pointer;
+color:white;
+font-size:15px;
 }
 
-footer{
-background:#0a0a23;
-color:white;
-text-align:center;
-padding:15px;
-margin-top:20px;
+.buy-btn{
+background:#2e7d32;
 }
+
+.cart-btn{
+background:#ff9800;
+}
+
+/* WHATSAPP */
+
+.whatsapp{
+position:fixed;
+right:15px;
+bottom:20px;
+background:#25D366;
+color:white;
+padding:14px 18px;
+border-radius:40px;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+z-index:1000;
+}
+
+/* CART POPUP */
+
+.cart-popup{
+position:fixed;
+top:100px;
+right:20px;
+width:320px;
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+display:none;
+z-index:1001;
+max-height:500px;
+overflow:auto;
+}
+
+.cart-popup h2{
+margin-bottom:15px;
+}
+
+.cart-item{
+margin-bottom:10px;
+border-bottom:1px solid #ddd;
+padding-bottom:10px;
+}
+
+.checkout-btn{
+width:100%;
+padding:12px;
+border:none;
+background:#2e7d32;
+color:white;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.brand h1{
+font-size:20px;
+}
+
+.brand p{
+font-size:11px;
+}
+
+.logo{
+width:45px;
+height:45px;
+font-size:18px;
+}
+
+.top-btn{
+padding:10px 14px;
+font-size:13px;
+}
+
+.card h3{
+font-size:18px;
+}
+
+.price{
+font-size:30px;
+}
+
+.products{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
+
+<div class="logo-box">
+<div class="logo">NT</div>
+
+<div class="brand">
 <h1>NAHATECH LTD</h1>
-<p>Affordable Laptops Kenya</p>
+<p>Premium Laptops Kenya</p>
+</div>
+</div>
+
+<div class="top-buttons">
+<button class="top-btn" onclick="toggleCart()">
+🛒 Cart (<span id="cartCount">0</span>)
+</button>
+
+<button class="top-btn admin-btn">
+🔐 Admin
+</button>
+</div>
+
 </header>
 
-<div class="container" id="products"></div>
+<!-- CART -->
 
-<footer>
-📍 Kisii Kenya | 📞 +254786467783
-</footer>
+<div class="cart-popup" id="cartPopup">
+<h2>Shopping Cart</h2>
+
+<div id="cartItems"></div>
+
+<h3>Total: KSh <span id="totalPrice">0</span></h3>
+
+<button class="checkout-btn" onclick="checkoutWhatsApp()">
+Checkout via WhatsApp
+</button>
+</div>
+
+<!-- PRODUCTS -->
+
+<div class="products" id="productsContainer"></div>
+
+<!-- WHATSAPP -->
+
+<a class="whatsapp"
+href="https://wa.me/254786467783"
+target="_blank">
+💬 WhatsApp Order
+</a>
 
 <script>
 
 const products = [
 
 {
-name:"HP EliteBook 840 G3",
-price:28500,
-quantity:12,
-image:"https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=600"
+name:"HP Elitebook 840 G3",
+price:25800,
+stock:3,
+image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
 },
 
 {
-name:"Dell Latitude 7490",
-price:32500,
-quantity:8,
-image:"https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600"
+name:"HP Elitebook 840 G5",
+price:29000,
+stock:6,
+image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8"
 },
 
 {
-name:"Lenovo ThinkPad T460",
-price:24500,
-quantity:15,
-image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=600"
+name:"HP 840 G2 (HDD)",
+price:21500,
+stock:2,
+image:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97"
 },
 
 {
-name:"MacBook Air 2017",
-price:45000,
-quantity:5,
-image:"https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=600"
+name:"Lenovo Thinkpad X250 Intel Core I5",
+price:20999,
+stock:1,
+image:"https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+},
+
+{
+name:"HP Elitebook 830 G5 Touchscreen",
+price:37000,
+stock:1,
+image:"https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2"
+},
+
+{
+name:"Dell Latitude 7280",
+price:22000,
+stock:1,
+image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4"
+},
+
+{
+name:"MacBook Pro 13",
+price:34000,
+stock:1,
+image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8"
+},
+
+{
+name:"Oraimo Earphone Deeper Bass",
+price:150,
+stock:54,
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+},
+
+{
+name:"Oraimo Earphone",
+price:175,
+stock:60,
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+},
+
+{
+name:"Oraimo Earphone Extreme Bass",
+price:200,
+stock:35,
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+},
+
+{
+name:"HF F100 Bluetooth Speaker",
+price:850,
+stock:15,
+image:"https://images.unsplash.com/photo-1589003077984-894e133dabab"
+},
+
+{
+name:"HM 906 Bluetooth Speaker",
+price:1650,
+stock:5,
+image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
+},
+
+{
+name:"C15 Bluetooth Speaker",
+price:1120,
+stock:12,
+image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
+},
+
+{
+name:"HF 1068A BT Speaker",
+price:550,
+stock:12,
+image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
+},
+
+{
+name:"Itel Budsneo 3",
+price:1450,
+stock:5,
+image:"https://images.unsplash.com/photo-1583394838336-acd977736f90"
+},
+
+{
+name:"Itel Buds Ace",
+price:1350,
+stock:6,
+image:"https://images.unsplash.com/photo-1583394838336-acd977736f90"
+},
+
+{
+name:"Amaya APB-F229 Power Bank 20000mAh",
+price:2500,
+stock:15,
+image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
+},
+
+{
+name:"Amaya APW-06 Power Bank 10000mAh",
+price:1500,
+stock:5,
+image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
+},
+
+{
+name:"Oraimo Slice Link Power Bank",
+price:1750,
+stock:0,
+image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
+},
+
+{
+name:"Samsung 25W Super Fast Charger",
+price:520,
+stock:13,
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+},
+
+{
+name:"Samsung USB-C Wall Adapter",
+price:750,
+stock:8,
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+},
+
+{
+name:"Samsung C to C Cable",
+price:250,
+stock:45,
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+},
+
+{
+name:"Samsung C to C Cable 1.5m",
+price:150,
+stock:15,
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+},
+
+{
+name:"Amaya X51 Fast Charging Cable",
+price:250,
+stock:15,
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
 }
 
 ];
 
-function loadProducts(){
+const container = document.getElementById("productsContainer");
 
-let box=document.getElementById("products");
+products.forEach((product,index)=>{
 
-let html="";
+container.innerHTML += `
 
-products.forEach(p=>{
-
-html += `
 <div class="card">
 
-<img src="${p.image}">
+<img src="${product.image}" alt="${product.name}">
 
-<h2>${p.name}</h2>
+<h3>${product.name}</h3>
 
-<div class="price">
-KSh ${p.price}
-</div>
+<div class="stock">📦 In Stock: ${product.stock}</div>
 
-<div class="stock">
-Stock: ${p.quantity}
-</div>
+<div class="price">KSh ${product.price.toLocaleString()}</div>
 
-<button onclick="buyNow('${p.name}')">
-Buy Now
+<div class="buttons">
+
+<button class="buy-btn"
+onclick="buyNow('${product.name}',${product.price})">
+🛒 Buy Now
+</button>
+
+<button class="cart-btn"
+onclick="addToCart('${product.name}',${product.price})">
+➕ Add to Cart
 </button>
 
 </div>
+
+</div>
+
 `;
 
 });
 
-box.innerHTML=html;
+let cart = [];
+
+function addToCart(name,price){
+
+cart.push({name,price});
+
+updateCart();
+
+alert(name + " added to cart");
 
 }
 
-function buyNow(name){
+function updateCart(){
+
+document.getElementById("cartCount").innerText = cart.length;
+
+const cartItems = document.getElementById("cartItems");
+
+cartItems.innerHTML = "";
+
+let total = 0;
+
+cart.forEach(item=>{
+
+total += item.price;
+
+cartItems.innerHTML += `
+
+<div class="cart-item">
+${item.name}<br>
+<strong>KSh ${item.price}</strong>
+</div>
+
+`;
+
+});
+
+document.getElementById("totalPrice").innerText =
+total.toLocaleString();
+
+}
+
+function toggleCart(){
+
+const popup = document.getElementById("cartPopup");
+
+if(popup.style.display === "block"){
+popup.style.display = "none";
+}else{
+popup.style.display = "block";
+}
+
+}
+
+function buyNow(name,price){
+
+const message =
+`Hello NAHATECH, I want to buy:\n\n${name}\nPrice: KSh ${price}`;
 
 window.open(
-`https://wa.me/254786467783?text=Hello%20NAHATECH,%20I%20want%20to%20buy%20${name}`,
+`https://wa.me/254786467783?text=${encodeURIComponent(message)}`,
 "_blank"
 );
 
 }
 
-loadProducts();
+function checkoutWhatsApp(){
+
+if(cart.length === 0){
+
+alert("Your cart is empty");
+return;
+
+}
+
+let message = "Hello NAHATECH, I want to order:\n\n";
+
+let total = 0;
+
+cart.forEach(item=>{
+
+message += `${item.name} - KSh ${item.price}\n`;
+
+total += item.price;
+
+});
+
+message += `\nTotal: KSh ${total}`;
+
+window.open(
+`https://wa.me/254786467783?text=${encodeURIComponent(message)}`,
+"_blank"
+);
+
+}
 
 </script>
 
 </body>
-</html>
+  </html>

@@ -7,6 +7,7 @@
 <title>NAHATECH LTD - Premium Laptops Kenya</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -109,16 +110,17 @@ transform:translateY(-5px);
 .card img{
 width:100%;
 height:180px;
-object-fit:contain;
+object-fit:cover;
 background:#fafafa;
 border-radius:10px;
+display:block;
 }
 
 .card h3{
-font-size:24px;
+font-size:22px;
 margin-top:12px;
 color:#222;
-min-height:70px;
+min-height:65px;
 }
 
 .stock{
@@ -128,7 +130,7 @@ margin:8px 0;
 }
 
 .price{
-font-size:38px;
+font-size:34px;
 font-weight:bold;
 color:#2e7d32;
 margin-bottom:12px;
@@ -150,14 +152,23 @@ font-weight:bold;
 cursor:pointer;
 color:white;
 font-size:15px;
+transition:0.3s;
 }
 
 .buy-btn{
 background:#2e7d32;
 }
 
+.buy-btn:hover{
+background:#1b5e20;
+}
+
 .cart-btn{
 background:#ff9800;
+}
+
+.cart-btn:hover{
+background:#ef6c00;
 }
 
 /* WHATSAPP */
@@ -239,15 +250,26 @@ font-size:13px;
 }
 
 .card h3{
-font-size:18px;
+font-size:17px;
+min-height:55px;
 }
 
 .price{
-font-size:30px;
+font-size:24px;
 }
 
 .products{
 grid-template-columns:repeat(2,1fr);
+gap:12px;
+padding:12px;
+}
+
+.card{
+padding:10px;
+}
+
+.card img{
+height:140px;
 }
 
 }
@@ -260,15 +282,18 @@ grid-template-columns:repeat(2,1fr);
 <header>
 
 <div class="logo-box">
+
 <div class="logo">NT</div>
 
 <div class="brand">
 <h1>NAHATECH LTD</h1>
 <p>Premium Laptops Kenya</p>
 </div>
+
 </div>
 
 <div class="top-buttons">
+
 <button class="top-btn" onclick="toggleCart()">
 🛒 Cart (<span id="cartCount">0</span>)
 </button>
@@ -276,6 +301,7 @@ grid-template-columns:repeat(2,1fr);
 <button class="top-btn admin-btn">
 🔐 Admin
 </button>
+
 </div>
 
 </header>
@@ -283,6 +309,7 @@ grid-template-columns:repeat(2,1fr);
 <!-- CART -->
 
 <div class="cart-popup" id="cartPopup">
+
 <h2>Shopping Cart</h2>
 
 <div id="cartItems"></div>
@@ -292,6 +319,7 @@ grid-template-columns:repeat(2,1fr);
 <button class="checkout-btn" onclick="checkoutWhatsApp()">
 Checkout via WhatsApp
 </button>
+
 </div>
 
 <!-- PRODUCTS -->
@@ -314,187 +342,112 @@ const products = [
 name:"HP Elitebook 840 G3",
 price:25800,
 stock:3,
-image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
+image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"HP Elitebook 840 G5",
 price:29000,
 stock:6,
-image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8"
+image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"HP 840 G2 (HDD)",
 price:21500,
 stock:2,
-image:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97"
+image:"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"Lenovo Thinkpad X250 Intel Core I5",
 price:20999,
 stock:1,
-image:"https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+image:"https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"HP Elitebook 830 G5 Touchscreen",
 price:37000,
 stock:1,
-image:"https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2"
+image:"https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"Dell Latitude 7280",
 price:22000,
 stock:1,
-image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4"
+image:"https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"MacBook Pro 13",
 price:34000,
 stock:1,
-image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8"
+image:"https://images.unsplash.com/photo-1517336714739-489689fd1ca8?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"Oraimo Earphone Deeper Bass",
 price:150,
 stock:54,
-image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-},
-
-{
-name:"Oraimo Earphone",
-price:175,
-stock:60,
-image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-},
-
-{
-name:"Oraimo Earphone Extreme Bass",
-price:200,
-stock:35,
-image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"HF F100 Bluetooth Speaker",
 price:850,
 stock:15,
-image:"https://images.unsplash.com/photo-1589003077984-894e133dabab"
-},
-
-{
-name:"HM 906 Bluetooth Speaker",
-price:1650,
-stock:5,
-image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
-},
-
-{
-name:"C15 Bluetooth Speaker",
-price:1120,
-stock:12,
-image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
-},
-
-{
-name:"HF 1068A BT Speaker",
-price:550,
-stock:12,
-image:"https://images.unsplash.com/photo-1545454675-3531b543be5d"
+image:"https://images.unsplash.com/photo-1589003077984-894e133dabab?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"Itel Budsneo 3",
 price:1450,
 stock:5,
-image:"https://images.unsplash.com/photo-1583394838336-acd977736f90"
-},
-
-{
-name:"Itel Buds Ace",
-price:1350,
-stock:6,
-image:"https://images.unsplash.com/photo-1583394838336-acd977736f90"
-},
-
-{
-name:"Amaya APB-F229 Power Bank 20000mAh",
-price:2500,
-stock:15,
-image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
-},
-
-{
-name:"Amaya APW-06 Power Bank 10000mAh",
-price:1500,
-stock:5,
-image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
-},
-
-{
-name:"Oraimo Slice Link Power Bank",
-price:1750,
-stock:0,
-image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4"
+image:"https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80"
 },
 
 {
 name:"Samsung 25W Super Fast Charger",
 price:520,
 stock:13,
-image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=80"
 },
 
 {
-name:"Samsung USB-C Wall Adapter",
-price:750,
-stock:8,
-image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
-},
-
-{
-name:"Samsung C to C Cable",
-price:250,
-stock:45,
-image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
-},
-
-{
-name:"Samsung C to C Cable 1.5m",
-price:150,
+name:"Amaya APB-F229 Power Bank 20000mAh",
+price:2500,
 stock:15,
-image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
-},
-
-{
-name:"Amaya X51 Fast Charging Cable",
-price:250,
-stock:15,
-image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0"
+image:"https://images.unsplash.com/photo-1609592806596-b43bada2f2f4?auto=format&fit=crop&w=800&q=80"
 }
 
 ];
 
 const container = document.getElementById("productsContainer");
 
-products.forEach((product,index)=>{
+products.forEach((product)=>{
 
 container.innerHTML += `
 
 <div class="card">
 
-<img src="${product.image}" alt="${product.name}">
+<img 
+src="${product.image}" 
+alt="${product.name}"
+loading="lazy"
+onerror="this.src='https://via.placeholder.com/300x200?text=NAHATECH+PRODUCT'"
+>
 
 <h3>${product.name}</h3>
 
-<div class="stock">📦 In Stock: ${product.stock}</div>
+<div class="stock">
+📦 In Stock: ${product.stock}
+</div>
 
-<div class="price">KSh ${product.price.toLocaleString()}</div>
+<div class="price">
+KSh ${product.price.toLocaleString()}
+</div>
 
 <div class="buttons">
 
@@ -546,7 +499,7 @@ cartItems.innerHTML += `
 
 <div class="cart-item">
 ${item.name}<br>
-<strong>KSh ${item.price}</strong>
+<strong>KSh ${item.price.toLocaleString()}</strong>
 </div>
 
 `;
@@ -562,21 +515,18 @@ function toggleCart(){
 
 const popup = document.getElementById("cartPopup");
 
-if(popup.style.display === "block"){
-popup.style.display = "none";
-}else{
-popup.style.display = "block";
-}
+popup.style.display =
+popup.style.display === "block" ? "none" : "block";
 
 }
 
 function buyNow(name,price){
 
 const message =
-`Hello NAHATECH, I want to buy:\n\n${name}\nPrice: KSh ${price}`;
+`Hello NAHATECH, I want to buy:%0A%0A${name}%0APrice: KSh ${price}`;
 
 window.open(
-`https://wa.me/254786467783?text=${encodeURIComponent(message)}`,
+`https://wa.me/254786467783?text=${message}`,
 "_blank"
 );
 
@@ -591,22 +541,23 @@ return;
 
 }
 
-let message = "Hello NAHATECH, I want to order:\n\n";
+let message =
+"Hello NAHATECH, I want to order:%0A%0A";
 
 let total = 0;
 
 cart.forEach(item=>{
 
-message += `${item.name} - KSh ${item.price}\n`;
+message += `${item.name} - KSh ${item.price}%0A`;
 
 total += item.price;
 
 });
 
-message += `\nTotal: KSh ${total}`;
+message += `%0ATotal: KSh ${total}`;
 
 window.open(
-`https://wa.me/254786467783?text=${encodeURIComponent(message)}`,
+`https://wa.me/254786467783?text=${message}`,
 "_blank"
 );
 
